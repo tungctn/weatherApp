@@ -1,35 +1,53 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, ActivityIndicator } from "react-native";
+import { Text, View, ActivityIndicator, TextInput, Alert } from "react-native";
 import axios from "axios";
 import SearchBar from "../../components/SearchBar";
 import Weather from "../../components/Weather";
 import styles from "./style";
+import { getCurrentData } from "../../api/weatherAPI";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import Forecast from "../../components/Forecast";
+import { API_KEY } from "../../constants";
+import * as Location from "expo-location";
 
 const Home = () => {
-  const API_KEY = "46a9246bebba16d42b36aac3fc3ba8af";
   const [weatherData, setWeatherData] = useState(null);
+
   const [loaded, setLoaded] = useState(true);
 
   const fetchWeatherData = async (cityName) => {
     setLoaded(false);
-    const API = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}`;
-    try {
-      const response = await axios.get(API);
-      console.log(response);
-      if (response.status === 200) {
-        const data = response.data;
-        setWeatherData(data);
-      } else {
-        setWeatherData(null);
-      }
-      setLoaded(true);
-    } catch (error) {
-      console.log(error);
+    const response = await getCurrentData(cityName);
+    if (response) {
+      setWeatherData(response);
+    }
+    setLoaded(true);
+  };
+  const url = `http://api.openweathermap.org/data/2.5/onecall?units=metric&eclude=minutely&appid=${API_KEY}`;
+  const [forecast, setForecast] = useState(null);
+
+  const loadForecast = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert("Permission to access location was denied");
+    }
+
+    const location = await Location.getCurrentPositionAsync();
+
+    const response = await fetch(
+      `${url}&lat=${location.coords.latitude}&lon=${location.coords.longitude}`
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      Alert.alert("Error", data.message);
+    } else {
+      setForecast(data);
     }
   };
 
   useEffect(() => {
-    fetchWeatherData("Mumbai");
+    loadForecast();
+    fetchWeatherData("Ha noi");
   }, []);
 
   if (!loaded) {
@@ -51,7 +69,11 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Weather weatherData={weatherData} fetchWeatherData={fetchWeatherData} />
+      <Weather
+        weatherData={weatherData}
+        setWeatherData={setWeatherData}
+        forecast={forecast}
+      />
     </View>
   );
 };

@@ -6,23 +6,68 @@ import {
   ImageBackground,
   Dimensions,
   StatusBar,
+  Image,
 } from "react-native";
 import SearchBar from "./SearchBar";
-import { haze, rainy, snow, sunny } from "../assets/backgroundImages/index";
+import {
+  haze,
+  humidityImg,
+  rainy,
+  snow,
+  sunny,
+  tempImg,
+} from "../assets/index";
+import Forecast from "./Forecast";
 
-const Weather = ({ weatherData, fetchWeatherData }) => {
+const Weather = ({ weatherData, setWeatherData, forecast }) => {
   const [backgroundImage, setBackgroundImage] = useState(null);
-
+  const [state, setState] = useState();
   const {
     weather,
     name,
     main: { temp, humidity },
     wind: { speed },
   } = weatherData;
-  const [{ main }] = weather;
 
+  const [{ main }] = weather;
+  const [data, setData] = useState({
+    weather,
+    name,
+    main: { temp, humidity },
+    wind: { speed },
+  });
+  const data1 = {
+    clouds: 0,
+    dew_point: 11.06,
+    dt: 1677510000,
+    feels_like: 17.48,
+    humidity: 64,
+    pop: 0,
+    pressure: 1024,
+    temp: 17.96,
+    uvi: 0,
+    visibility: 10000,
+    weather: [
+      { id: 800, main: "Clear", description: "clear sky", icon: "01n" },
+    ],
+    wind_deg: 149,
+    wind_gust: 7.96,
+    wind_speed: 4.13,
+  };
   useEffect(() => {
+    console.log(weatherData);
     setBackgroundImage(getBackgroundImg(main));
+    if (main === "Clear") {
+      setState("Trời nắng");
+    } else if (main === "Rain") {
+      setState("Trời mưa");
+    } else if (main === "Snow") {
+      setState("Trời tuyết");
+    } else if (main === "Haze") {
+      setState("Trời mây");
+    } else {
+      setState("Trời mưa");
+    }
   }, [weatherData]);
 
   const getBackgroundImg = (weather) => {
@@ -42,8 +87,6 @@ const Weather = ({ weatherData, fetchWeatherData }) => {
         source={backgroundImage}
         style={styles.backgroundImg}
         resizeMode="cover">
-        <SearchBar fetchWeatherData={fetchWeatherData} />
-
         <View style={{ alignItems: "center" }}>
           <Text
             style={{
@@ -60,7 +103,7 @@ const Weather = ({ weatherData, fetchWeatherData }) => {
               color: textColor,
               fontWeight: "bold",
             }}>
-            {main}
+            {state}
           </Text>
           <Text style={{ ...styles.headerText, color: textColor }}>
             {temp} °C
@@ -69,14 +112,25 @@ const Weather = ({ weatherData, fetchWeatherData }) => {
 
         <View style={styles.extraInfo}>
           <View style={styles.info}>
-            <Text style={{ fontSize: 22, color: "white" }}>Humidity</Text>
+            <Image style={{ width: 70, height: 70 }} source={tempImg} />
+
+            <Text style={{ fontSize: 22, color: "white" }}>Độ ẩm</Text>
             <Text style={{ fontSize: 22, color: "white" }}>{humidity} %</Text>
           </View>
 
           <View style={styles.info}>
-            <Text style={{ fontSize: 22, color: "white" }}>Wind Speed</Text>
+            <Image style={{ width: 70, height: 70 }} source={humidityImg} />
+            <Text style={{ fontSize: 22, color: "white" }}>Tốc độ gió</Text>
             <Text style={{ fontSize: 22, color: "white" }}>{speed} m/s</Text>
           </View>
+        </View>
+        <View
+          style={{
+            marginTop: 100,
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+          <Forecast forecast={forecast} />
         </View>
       </ImageBackground>
     </View>
@@ -109,6 +163,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 15,
     justifyContent: "center",
+    alignItems: "center",
   },
 });
 
