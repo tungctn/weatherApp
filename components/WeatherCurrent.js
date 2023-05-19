@@ -24,7 +24,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
   const {
     weather,
     name,
-    main: { temp, humidity, pressure },
+    main: { temp, humidity, pressure, feels_like,   },
     wind: { speed },
   } = weatherData;
 
@@ -70,7 +70,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
 
           <Text style={{ ...styles.stateName, color: textColor }}>
             <Image
-              style={{ width: 200, height: 100 }}
+              style={{ width: 200, height: 200 }}
               source={{
                 uri: `http://openweathermap.org/img/w/${weather[0].icon}.png`,
               }}
@@ -130,6 +130,36 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
         </View>
         <View style={styles.forecastContainer}>
           <Forecast forecast={forecast} />
+        </View>
+        <View style={styles.info}>
+          <Text>
+            Cảm giác như: {feels_like} °C
+          </Text>
+        </View>
+        <View style={styles.info}>
+          <Text>
+            Độ ẩm: {humidity} %
+          </Text>
+        </View>
+        <View style={styles.info}>
+          <Text>
+            Có thể mưa: 99999 %
+          </Text>
+        </View>
+        <View style={styles.info}>
+          <Text>
+            Áp suất: {pressure} mbar
+          </Text>
+        </View>
+        <View style={styles.info}>
+          <Text>
+            Tốc độ gió: 99999 km/h
+          </Text>
+        </View>
+        <View style={styles.info}>
+          <Text>
+            Chỉ số UV: 99999 
+          </Text>
         </View>
       </ImageBackground>
     </View>
