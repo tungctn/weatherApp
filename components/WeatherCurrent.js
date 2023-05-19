@@ -114,7 +114,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
           </View>
           <View style={styles.info}>
             <Image
-              style={{ width: 20, height: 20, color: "white" }}
+              style={{ width: 20, height: 20 }}
               source={require("../assets/pressure.png")}
             />
             <Text

@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Tabs from "./screen/navigation";
 import Location from "./screen/location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ScrollView, Text, FlatList, View } from "react-native";
 import MyPager from "./screen/weather";
 import Search from "./screen/search";
 import Info from "./screen/info";
