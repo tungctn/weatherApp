@@ -13,9 +13,6 @@ const MyPager = ({}) => {
   const isFocused = useIsFocused();
   const [data, setData] = useState([]);
   const navigator = useNavigation();
-  
-  
-
   useEffect(() => {
     AsyncStorage.getItem("location").then((data) => {
       // console.log(data);

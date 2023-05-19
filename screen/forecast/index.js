@@ -7,6 +7,9 @@ import {
   StyleSheet,
   Modal,
   TouchableOpacity,
+  SafeAreaView,
+  ActivityIndicator,
+  FlatList,
 } from "react-native";
 import { getCurrentData } from "../../api/weatherAPI";
 import { API_KEY } from "../../constants";
@@ -14,6 +17,9 @@ import { LineChart } from "react-native-chart-kit";
 import * as shape from "d3-shape";
 import { Header } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import WeatherChart from "../../components/WeatherChart";
+import Svg, { Circle, Line } from "react-native-svg";
 
 const ForecastDay = ({ route }) => {
   const { location } = route.params;
@@ -74,140 +80,166 @@ const ForecastDay = ({ route }) => {
     setModalVisible(!modalVisible);
   };
 
+  const daysOfWeek = [
+    "Chủ nhật",
+    "Thứ hai",
+    "Thứ ba",
+    "Thứ tư",
+    "Thứ năm",
+    "Thứ sáu",
+    "Thứ bảy",
+  ];
   return (
-    <View style={{ flex: 1 }}>
-      <Modal visible={modalVisible} animationType="slide">
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Weather Forecast</Text>
-            <Text style={styles.closeBtn} onPress={onClose}>
-              X
-            </Text>
-          </View>
-          <View style={styles.content}>
-            <Image
-              style={styles.icon}
-              source={{
-                uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS21sVo-Di4xudDkyw7SroBMAE6BOv3q-fCi7u68mK_UoMIH__f2dKilu8aWW993mebhnI&usqp=CAU",
-              }}
-            />
-            <Text style={styles.tempText}>26°C</Text>
-            <Text style={styles.infoText}>Humidity: 25%</Text>
-            <Text style={styles.infoText}>Wind: 25 km/h</Text>
-          </View>
-        </View>
-      </Modal>
-      <Header
-        leftComponent={{
-          icon: "arrow-back",
-          color: "#fff",
-          onPress: () => navigator.goBack(),
-          size: 40,
-        }}
-        centerComponent={{
-          text: location,
-          style: {
-            color: "#fff",
-            fontSize: 25,
-            textAlign: "center",
-            width: "100%",
-          },
-        }}
-        containerStyle={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-        }}
-      />
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 100,
-        }}>
-        {forecast && (
-          <LineChart
-            onDataPointClick={({ index }) => {
-              setModalVisible(!modalVisible);
-            }}
-            yLabelsOffset={-10}
-            fromZero={true}
-            formatYLabel={(value) => ""}
-            data={data}
-            width={350}
-            height={220}
-            chartConfig={chartConfig}
-            bezier
-            style={{ marginVertical: 8, borderRadius: 16 }}
-            curve={shape.curveNatural}
-            hidePointsAtIndex={[]}
-            renderDotContent={({ x, y, index }) => {
-              console.log(x, y, index);
-              return (
-                <View
-                  style={{
-                    borderRadius: 10,
-                    backgroundColor: "rgba(134, 65, 244, 0.1)",
-                    position: "absolute",
-                    top: y - 25,
-                    left: x - 10,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}>
-                  <Text
-                    style={{
-                      color: "rgba(134, 65, 244, 1)",
-                      fontSize: 12,
-                    }}>
-                    {data.datasets[0].data[index]} °C
-                  </Text>
-                </View>
-              );
+    <SafeAreaView>
+      {!forecast && <ActivityIndicator size="large" color="black" />}
+
+      <ScrollView>
+        <View
+          style={{
+            flex: 0.1,
+            flexDirection: "row",
+            marginTop: 50,
+            marginLeft: 10,
+            marginBottom: 30,
+          }}>
+          <Ionicons
+            style={{ fontSize: 40 }}
+            name="arrow-back-circle-outline"
+            onPress={() => {
+              navigator.goBack();
             }}
           />
-        )}
-      </View>
-    </View>
+          <View style={{ flex: 1, alignSelf: "center" }}>
+            <Text
+              style={{
+                fontSize: 28,
+                textAlign: "center",
+              }}>
+              {location}
+            </Text>
+          </View>
+        </View>
+        <FlatList
+          horizontal
+          data={forecast?.daily?.slice(0, 7)}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }) => {
+            const weather = item.weather[0];
+            let dt = new Date(item.dt * 1000);
+            const maxTemp = Math.max(
+              ...forecast?.daily?.map((item) => item.temp.max)
+            );
+            const minTemp = Math.min(
+              ...forecast?.daily?.map((item) => item.temp.min)
+            );
+            const circleRadius = 5;
+            const chartHeight = 20;
+            const range = maxTemp - minTemp;
+            const verticalScale = chartHeight / range;
+            const circleY = (item.temp.max - minTemp) * verticalScale;
+            const circleY1 = (item.temp.min - minTemp) * verticalScale;
+            return (
+              <View
+                style={
+                  index === 0
+                    ? [
+                        {
+                          alignItems: "center",
+                          textAlign: "center",
+                          padding: 10,
+                          borderRadius: 10,
+                          backgroundColor: "rgba(0,0,0,0.05)",
+                        },
+                      ]
+                    : [
+                        {
+                          alignItems: "center",
+                          textAlign: "center",
+                          padding: 10,
+                        },
+                      ]
+                }>
+                <Text style={{ color: "black" }}>
+                  <Text style={{ color: "black" }}>
+                    {index === 0 ? "Hôm nay" : daysOfWeek[dt.getDay()]}
+                  </Text>
+                </Text>
+                <Text style={{ color: "black" }}>
+                  {dt.getDate()}/{dt.getMonth() + 1}
+                </Text>
+                <Image
+                  style={{ width: 40, height: 80 }}
+                  source={{
+                    uri: `http://openweathermap.org/img/w/${weather.icon}.png`,
+                  }}
+                />
+                <Text
+                  style={{ color: "black", fontWeight: "bold", fontSize: 18 }}>
+                  {Math.round(item.temp.max)}°
+                </Text>
+                <View
+                  style={{
+                    marginTop: 30,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: chartHeight,
+                  }}>
+                  <View
+                    style={{
+                      height: circleRadius * 2,
+                      width: circleRadius * 2,
+                      borderRadius: circleRadius,
+                      backgroundColor: "black",
+                      position: "absolute",
+                      bottom: circleY - circleRadius,
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    marginTop: 20,
+                    marginBottom: 30,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: chartHeight,
+                  }}>
+                  <View
+                    style={{
+                      height: circleRadius * 2,
+                      width: circleRadius * 2,
+                      borderRadius: circleRadius,
+                      backgroundColor: "black",
+                      position: "absolute",
+                      bottom: circleY1 - circleRadius,
+                    }}
+                  />
+                </View>
+                <Text
+                  style={{ color: "black", fontWeight: "bold", fontSize: 18 }}>
+                  {Math.round(item.temp.min)}°
+                </Text>
+                <Image
+                  style={{ width: 40, height: 80 }}
+                  source={{
+                    uri: `http://openweathermap.org/img/w/${weather.icon}.png`,
+                  }}
+                />
+
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Image
+                    style={{ width: 15, height: 15, marginRight: 5 }}
+                    source={require("../../assets/wind.png")}
+                  />
+                  <Text style={{ color: "black" }}>{item.wind_speed} m/s</Text>
+                </View>
+              </View>
+            );
+          }}
+        />
+        
+      </ScrollView>
+    </SafeAreaView>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 20,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  closeBtn: {
-    fontSize: 20,
-    color: "#000",
-  },
-  content: {
-    alignItems: "center",
-  },
-  icon: {
-    width: 100,
-    height: 100,
-    marginBottom: 20,
-  },
-  tempText: {
-    fontSize: 40,
-    fontWeight: "bold",
-  },
-  infoText: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-});
 
 export default ForecastDay;

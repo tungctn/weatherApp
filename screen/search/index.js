@@ -129,14 +129,6 @@ const Search = () => {
             marginTop: 50,
             marginLeft: 10,
           }}>
-          {/* <Icon
-            style={{ fontSize: 28 }}
-            name="arrow-left"
-            type="font-awesome"
-            onPress={() => {
-              navigator.goBack();
-            }}
-          /> */}
           <Ionicons
             style={{ fontSize: 40 }}
             name="arrow-back-circle-outline"
@@ -147,10 +139,10 @@ const Search = () => {
           <View style={{ flex: 1, alignSelf: "center" }}>
             <Text
               style={{
-                fontSize: 28,
+                fontSize: 35,
                 textAlign: "center",
               }}>
-              Tìm thành phố yêu thích
+              Quản lý thành phố 
             </Text>
           </View>
         </View>
