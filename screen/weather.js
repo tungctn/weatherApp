@@ -26,6 +26,9 @@ const MyPager = ({}) => {
   const handleAddButtonPress = () => {
     navigator.navigate("Search");
   };
+  const handleSetButtonPress = () => {
+    navigator.navigate("Setting");
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -36,6 +39,14 @@ const MyPager = ({}) => {
           </View>
         </TouchableOpacity>
       </View>
+
+      <View style={{ position: "absolute", top: 50, right: 10, zIndex: 1 }}>
+      <TouchableOpacity onPress={handleSetButtonPress}>
+        <View style={styles.circleButton}>
+          <FontAwesome name="cog" size={30} color="white" />
+        </View>
+      </TouchableOpacity>
+    </View>
 
       <PagerView style={styles.viewPager} initialPage={0}>
         {data?.map((item, index) => {
