@@ -70,7 +70,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
 
           <Text style={{ ...styles.stateName, color: textColor }}>
             <Image
-              style={{ width: 200, height: 200 }}
+              style={{ width: 200, height: 100}}
               source={{
                 uri: `http://openweathermap.org/img/w/${weather[0].icon}.png`,
               }}
