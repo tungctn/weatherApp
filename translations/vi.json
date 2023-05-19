@@ -3,6 +3,11 @@
     "temperature": "Nhiệt độ",
     "humidity": "Độ ẩm",
     "windSpeed": "Tốc độ gió",
-    "searchPlaceholder": "Tìm kiếm thành phố..."
+    "searchPlaceholder": "Tìm kiếm thành phố...",
+    "feels_like": "Cảm giác như:",
+    "clouds": "Có thể mưa",
+    "pressure": "Áp suất",
+    "wind_speed": "Tốc độ gió",
+    "uvi": "Chỉ số UV"
 }
   
