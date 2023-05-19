@@ -11,7 +11,7 @@ import {
 
 const Forecast = ({ forecast }) => {
   useEffect(() => {
-    console.log(forecast);
+    console.log({ forecast: forecast });
   }, []);
   return (
     <SafeAreaView>
@@ -37,18 +37,24 @@ const Forecast = ({ forecast }) => {
                   },
                 ]}>
                 <Text style={{ color: "white" }}>{dt.getHours()}:00</Text>
+                <Text
+                  style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>
+                  {Math.round(item.temp)}°
+                </Text>
                 <Image
-                  style={{ width: 50, height: 60 }}
+                  style={{ width: 40, height: 80 }}
                   source={{
                     uri: `http://openweathermap.org/img/w/${weather.icon}.png`,
                   }}
                 />
-                <Text style={{ color: "white" }}>
-                  {Math.round(item.temp)}°C
-                </Text>
-                <Text style={{ color: "white" }}>
-                  {dt.toLocaleDateString()}
-                </Text>
+
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Image
+                    style={{ width: 15, height: 15, marginRight: 5 }}
+                    source={require("../assets/wind.png")}
+                  />
+                  <Text style={{ color: "white" }}>{item.wind_speed} m/s</Text>
+                </View>
               </View>
             );
           }}
