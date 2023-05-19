@@ -47,7 +47,6 @@ const Home = () => {
 
   useEffect(() => {
     loadForecast();
-    fetchWeatherData("Hanoi, Vietnam");
   }, []);
 
   if (!loaded) {

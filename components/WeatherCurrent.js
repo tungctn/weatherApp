@@ -18,6 +18,7 @@ import {
   tempImg,
 } from "../assets/index";
 import Forecast from "./ForecastCurrent";
+import { API_KEY } from "../constants";
 
 const Weather = ({ weatherData, setWeatherData, forecast }) => {
   const [backgroundImage, setBackgroundImage] = useState(null);
@@ -29,11 +30,27 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
     wind: { speed },
   } = weatherData;
 
+  const [current, setCurrent] = useState(null);
+  const url = `http://api.openweathermap.org/data/2.5/onecall?units=metric&eclude=minutely&appid=${API_KEY}`;
+  const loadCurrent = async () => {
+    const response = await fetch(
+      `${url}&lat=${weatherData?.coord.lat}&lon=${weatherData?.coord.lon}`
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      Alert.alert("Error", data.message);
+    } else {
+      console.log(data);
+      setCurrent(data);
+    }
+  };
+
   const [{ main }] = weather;
   useEffect(() => {
     console.log(weatherData);
     console.log(forecast);
     setBackgroundImage(getBackgroundImg(main));
+    loadCurrent();
     if (main === "Clear") {
       setState("Trời nắng");
     } else if (main === "Rain") {
@@ -66,8 +83,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
             uri: "https://img.freepik.com/free-vector/blue-cloudy-daylight-background-weather-design_33099-512.jpg",
           }}
           style={styles.backgroundImg}
-          resizeMode="cover"
-        >
+          resizeMode="cover">
           <View style={styles.weatherInfo}>
             <Text style={{ ...styles.cityName, color: textColor }}>{name}</Text>
 
@@ -96,8 +112,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   marginLeft: 10,
                   color: "white",
                   fontWeight: "bold",
-                }}
-              >
+                }}>
                 {humidity}%
               </Text>
             </View>
@@ -112,8 +127,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   marginLeft: 10,
                   color: "white",
                   fontWeight: "bold",
-                }}
-              >
+                }}>
                 {speed} m/s
               </Text>
             </View>
@@ -128,8 +142,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   marginLeft: 10,
                   color: "white",
                   fontWeight: "bold",
-                }}
-              >
+                }}>
                 {pressure} hPa
               </Text>
             </View>
@@ -145,8 +158,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   lineHeight: 30,
                   fontSize: 20,
                   color: "white",
-                }}
-              >
+                }}>
                 Cảm giác như:
               </Text>
               <Text
@@ -156,8 +168,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   fontSize: 30,
                   paddingBottom: 10,
                   color: "white",
-                }}
-              >
+                }}>
                 {feels_like} °C
               </Text>
               <Text
@@ -166,8 +177,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   lineHeight: 30,
                   fontSize: 20,
                   color: "white",
-                }}
-              >
+                }}>
                 Độ ẩm:
               </Text>
               <Text
@@ -177,8 +187,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   fontSize: 30,
                   paddingBottom: 10,
                   color: "white",
-                }}
-              >
+                }}>
                 {humidity} %
               </Text>
               <Text
@@ -187,8 +196,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   lineHeight: 30,
                   fontSize: 20,
                   color: "white",
-                }}
-              >
+                }}>
                 Có thể mưa:
               </Text>
               <Text
@@ -198,13 +206,11 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   fontSize: 30,
                   paddingBottom: 10,
                   color: "white",
-                }}
-              >
-                Nháp %
+                }}>
+                {current?.current?.clouds} %
               </Text>
             </View>
-            
-            
+
             <View style={{ flex: 1 }}>
               <Text
                 style={{
@@ -212,8 +218,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   lineHeight: 30,
                   fontSize: 20,
                   color: "white",
-                }}
-              >
+                }}>
                 Áp suất:
               </Text>
               <Text
@@ -223,8 +228,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   fontSize: 30,
                   paddingBottom: 10,
                   color: "white",
-                }}
-              >
+                }}>
                 {pressure} mbar
               </Text>
               <Text
@@ -233,8 +237,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   lineHeight: 30,
                   fontSize: 20,
                   color: "white",
-                }}
-              >
+                }}>
                 Tốc độ gió:
               </Text>
               <Text
@@ -244,9 +247,8 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   fontSize: 30,
                   paddingBottom: 10,
                   color: "white",
-                }}
-              >
-                Nháp km/h
+                }}>
+                {current?.current?.wind_speed} km/h
               </Text>
               <Text
                 style={{
@@ -254,8 +256,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   lineHeight: 30,
                   fontSize: 20,
                   color: "white",
-                }}
-              >
+                }}>
                 Chỉ số UV:
               </Text>
               <Text
@@ -265,13 +266,11 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   fontSize: 30,
                   paddingBottom: 10,
                   color: "white",
-                }}
-              >
-                Nháp 
+                }}>
+                {current?.current?.uvi}
               </Text>
             </View>
           </View>
-          
         </ImageBackground>
       </View>
     </ScrollView>
@@ -333,7 +332,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0, 0.5)",
     // padding: 10,
     paddingTop: 20,
-    marginTop: 70,  
+    marginTop: 70,
     paddingLeft: 10,
     paddingRight: 10,
     borderRadius: 15,

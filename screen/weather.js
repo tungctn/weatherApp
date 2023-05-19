@@ -6,12 +6,15 @@ import Location from "./location";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import { useIsFocused } from "@react-navigation/native";
+import { API_KEY } from "../constants";
+import { getCurrentData } from "../api/weatherAPI";
 
 const MyPager = ({}) => {
   const isFocused = useIsFocused();
   const [data, setData] = useState([]);
   const navigator = useNavigation();
-  const pagerRef = useRef();
+  
+  
 
   useEffect(() => {
     AsyncStorage.getItem("location").then((data) => {
@@ -20,7 +23,7 @@ const MyPager = ({}) => {
       console.log(list);
       const newList = ["Hanoi"].concat(list);
       setData(newList);
-    });
+    })
   }, [isFocused]);
 
   const handleAddButtonPress = () => {
