@@ -1,0 +1,13 @@
+{
+    "appTitle": "Weather App",
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "windSpeed": "Wind Speed",
+    "searchPlaceholder": "Search Placeholder",
+    "feels_like": "Feels Like:",
+    "clouds": "Clouds",
+    "pressure": "Pressure",
+    "wind_speed": "Wind Speed",
+    "uvi": "UV Index"
+}
+  
