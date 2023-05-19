@@ -7,6 +7,7 @@ import {
   Dimensions,
   StatusBar,
   Image,
+  ScrollView,
 } from "react-native";
 import {
   haze,
@@ -24,7 +25,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
   const {
     weather,
     name,
-    main: { temp, humidity, pressure, feels_like,   },
+    main: { temp, humidity, pressure, feels_like },
     wind: { speed },
   } = weatherData;
 
@@ -57,112 +58,223 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
   let textColor = "black";
 
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="#232f34" />
-      <ImageBackground
-        source={{
-          uri: "https://img.freepik.com/free-vector/blue-cloudy-daylight-background-weather-design_33099-512.jpg",
-        }}
-        style={styles.backgroundImg}
-        resizeMode="cover">
-        <View style={styles.weatherInfo}>
-          <Text style={{ ...styles.cityName, color: textColor }}>{name}</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <StatusBar backgroundColor="#232f34" />
+        <ImageBackground
+          source={{
+            uri: "https://img.freepik.com/free-vector/blue-cloudy-daylight-background-weather-design_33099-512.jpg",
+          }}
+          style={styles.backgroundImg}
+          resizeMode="cover"
+        >
+          <View style={styles.weatherInfo}>
+            <Text style={{ ...styles.cityName, color: textColor }}>{name}</Text>
 
-          <Text style={{ ...styles.stateName, color: textColor }}>
-            <Image
-              style={{ width: 200, height: 100}}
-              source={{
-                uri: `http://openweathermap.org/img/w/${weather[0].icon}.png`,
-              }}
-            />
-          </Text>
-          <Text style={{ ...styles.temperature, color: textColor }}>
-            {temp}°C
-          </Text>
-          <Text style={{ color: textColor, fontSize: 20 }}>{state}</Text>
-        </View>
-        <View style={styles.extraInfo}>
-          <View style={styles.info}>
-            <Image
-              style={{ width: 20, height: 20 }}
-              source={require("../assets/drop.png")}
-            />
-            <Text
-              style={{
-                fontSize: 15,
-                marginLeft: 10,
-                color: "white",
-                fontWeight: "bold",
-              }}>
-              {humidity}%
+            <Text style={{ ...styles.stateName, color: textColor }}>
+              <Image
+                style={{ width: 200, height: 100 }}
+                source={{
+                  uri: `http://openweathermap.org/img/w/${weather[0].icon}.png`,
+                }}
+              />
             </Text>
-          </View>
-          <View style={styles.info}>
-            <Image
-              style={{ width: 20, height: 20 }}
-              source={require("../assets/wind.png")}
-            />
-            <Text
-              style={{
-                fontSize: 15,
-                marginLeft: 10,
-                color: "white",
-                fontWeight: "bold",
-              }}>
-              {speed} m/s
+            <Text style={{ ...styles.temperature, color: textColor }}>
+              {temp}°C
             </Text>
+            <Text style={{ color: textColor, fontSize: 20 }}>{state}</Text>
           </View>
-          <View style={styles.info}>
-            <Image
-              style={{ width: 20, height: 20 }}
-              source={require("../assets/pressure.png")}
-            />
-            <Text
-              style={{
-                fontSize: 15,
-                marginLeft: 10,
-                color: "white",
-                fontWeight: "bold",
-              }}>
-              {pressure} hPa
-            </Text>
+          <View style={styles.extraInfo}>
+            <View style={styles.info}>
+              <Image
+                style={{ width: 20, height: 20 }}
+                source={require("../assets/drop.png")}
+              />
+              <Text
+                style={{
+                  fontSize: 15,
+                  marginLeft: 10,
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+              >
+                {humidity}%
+              </Text>
+            </View>
+            <View style={styles.info}>
+              <Image
+                style={{ width: 20, height: 20 }}
+                source={require("../assets/wind.png")}
+              />
+              <Text
+                style={{
+                  fontSize: 15,
+                  marginLeft: 10,
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+              >
+                {speed} m/s
+              </Text>
+            </View>
+            <View style={styles.info}>
+              <Image
+                style={{ width: 20, height: 20 }}
+                source={require("../assets/pressure.png")}
+              />
+              <Text
+                style={{
+                  fontSize: 15,
+                  marginLeft: 10,
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+              >
+                {pressure} hPa
+              </Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.forecastContainer}>
-          <Forecast forecast={forecast} />
-        </View>
-        <View style={styles.info}>
-          <Text>
-            Cảm giác như: {feels_like} °C
-          </Text>
-        </View>
-        <View style={styles.info}>
-          <Text>
-            Độ ẩm: {humidity} %
-          </Text>
-        </View>
-        <View style={styles.info}>
-          <Text>
-            Có thể mưa: 99999 %
-          </Text>
-        </View>
-        <View style={styles.info}>
-          <Text>
-            Áp suất: {pressure} mbar
-          </Text>
-        </View>
-        <View style={styles.info}>
-          <Text>
-            Tốc độ gió: 99999 km/h
-          </Text>
-        </View>
-        <View style={styles.info}>
-          <Text>
-            Chỉ số UV: 99999 
-          </Text>
-        </View>
-      </ImageBackground>
-    </View>
+          <View style={styles.forecastContainer}>
+            <Forecast forecast={forecast} />
+          </View>
+          <View style={styles.infoA}>
+            <View style={{ flex: 1 }}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  lineHeight: 30,
+                  fontSize: 20,
+                  color: "white",
+                }}
+              >
+                Cảm giác như:
+              </Text>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  lineHeight: 50,
+                  fontSize: 30,
+                  paddingBottom: 10,
+                  color: "white",
+                }}
+              >
+                {feels_like} °C
+              </Text>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  lineHeight: 30,
+                  fontSize: 20,
+                  color: "white",
+                }}
+              >
+                Độ ẩm:
+              </Text>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  lineHeight: 50,
+                  fontSize: 30,
+                  paddingBottom: 10,
+                  color: "white",
+                }}
+              >
+                {humidity} %
+              </Text>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  lineHeight: 30,
+                  fontSize: 20,
+                  color: "white",
+                }}
+              >
+                Có thể mưa:
+              </Text>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  lineHeight: 50,
+                  fontSize: 30,
+                  paddingBottom: 10,
+                  color: "white",
+                }}
+              >
+                Nháp %
+              </Text>
+            </View>
+            
+            
+            <View style={{ flex: 1 }}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  lineHeight: 30,
+                  fontSize: 20,
+                  color: "white",
+                }}
+              >
+                Áp suất:
+              </Text>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  lineHeight: 50,
+                  fontSize: 30,
+                  paddingBottom: 10,
+                  color: "white",
+                }}
+              >
+                {pressure} mbar
+              </Text>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  lineHeight: 30,
+                  fontSize: 20,
+                  color: "white",
+                }}
+              >
+                Tốc độ gió:
+              </Text>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  lineHeight: 50,
+                  fontSize: 30,
+                  paddingBottom: 10,
+                  color: "white",
+                }}
+              >
+                Nháp km/h
+              </Text>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  lineHeight: 30,
+                  fontSize: 20,
+                  color: "white",
+                }}
+              >
+                Chỉ số UV:
+              </Text>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  lineHeight: 50,
+                  fontSize: 30,
+                  paddingBottom: 10,
+                  color: "white",
+                }}
+              >
+                Nháp 
+              </Text>
+            </View>
+          </View>
+          
+        </ImageBackground>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -214,6 +326,21 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 20,
     // marginTop: 10,
+  },
+  infoA: {
+    // width: Dimensions.get("screen").width / 2.5,
+    height: 300,
+    backgroundColor: "rgba(0,0,0, 0.5)",
+    // padding: 10,
+    paddingTop: 20,
+    marginTop: 70,  
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: "bold",
+    flexDirection: "row",
   },
 });
 
