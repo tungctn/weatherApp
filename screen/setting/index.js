@@ -14,6 +14,9 @@ const Setting = () => {
   const [isEnabledMode, setEnabledMode] = useState(true)
 
   const [selectedLanguage, setSelectedLanguage] = React.useState("");
+  const [selectedTemperature, setSelectedTemperature] = React.useState("");
+  const [selectedWindSpeed, setSelectedWindSpeed] = React.useState("");
+  const [selectedPressure, setSelectedPressure] = React.useState("");
   
   const Language = [
       {key:'1', value:'Việt Nam'},
@@ -21,6 +24,27 @@ const Setting = () => {
       {key:'3', value:'中國人'},
       
   ]
+
+  const Temperature = [
+    {key:'1', value:'°C'},
+    {key:'2', value:'°F'},
+    {key:'3', value:'°K'},
+    
+]
+
+const WindSpeed = [
+  {key:'1', value:'km/h'},
+  {key:'2', value:'mph'},
+  {key:'3', value:'m/s'},
+  
+]
+
+const Pressure = [
+  {key:'1', value:'atm'},
+  {key:'2', value:'mbar'},
+  {key:'3', value:'hPa'},
+  
+]
 
   return (
     <ScrollView>
@@ -64,11 +88,13 @@ const Setting = () => {
         <Ionicons style={[styles.optionIcon, styles.mutedIcon]} name="language-outline" />
         <Text style={styles.optionText}>Ngôn ngữ</Text>
         <View style={{flex: 1}} />
-        <Text style={styles.optionTextSelect}>English</Text>
+        
         <SelectList 
         setSelected={(val) => setSelected(val)} 
         data={Language} 
         save="value"
+        defaultOption= "Việt Nam"
+        placeholder= "Việt Nam"
     />
       </View>
 
@@ -86,19 +112,33 @@ const Setting = () => {
         <Ionicons style={[styles.optionIcon, styles.mutedIcon]} name="thermometer-outline" />
         <Text style={styles.optionText}>Đơn vị đo nhiệt độ</Text>
         <View style={{flex: 1}} />
-        <Text style={styles.optionTextSelect}>Độ C</Text>
+        <SelectList 
+        setSelected={(val) => setSelected(val)} 
+        data={Temperature} 
+        save="value"
+    />
       </View>
       <View style={styles.option}>
         <Ionicons style={[styles.optionIcon, styles.mutedIcon]} name="speedometer-outline" />
         <Text style={styles.optionText}>Đơn vị đo tốc độ gió</Text>
         <View style={{flex: 1}} />
-        <Text style={styles.optionTextSelect}>km/h</Text>
+        
+        <SelectList 
+        setSelected={(val) => setSelected(val)} 
+        data={WindSpeed} 
+        save="value"
+    />
       </View>
       <View style={styles.option}>
         <Ionicons style={[styles.optionIcon, styles.mutedIcon]} name="planet-outline" />
         <Text style={styles.optionText}>Đơn vị áp suất</Text>
         <View style={{flex: 1}} />
-        <Text style={styles.optionTextSelect}>mbar</Text>
+        
+        <SelectList 
+        setSelected={(val) => setSelected(val)} 
+        data={Pressure} 
+        save="value"
+    />
       </View>
       <View style={styles.option}>
         
