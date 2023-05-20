@@ -1,7 +1,8 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, ScrollView, Switch } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import { SelectList } from 'react-native-dropdown-select-list'
 
 const Setting = () => {
   const navigator = useNavigation();
@@ -9,6 +10,17 @@ const Setting = () => {
   const handleBackButtonPress = () => {
     navigator.goBack();
   };
+  
+  const [isEnabledMode, setEnabledMode] = useState(true)
+
+  const [selectedLanguage, setSelectedLanguage] = React.useState("");
+  
+  const Language = [
+      {key:'1', value:'Việt Nam'},
+      {key:'2', value:'English'},
+      {key:'3', value:'中國人'},
+      
+  ]
 
   return (
     <ScrollView>
@@ -36,6 +48,16 @@ const Setting = () => {
         <Text style={styles.optionText}>Chế độ</Text>
         <View style={{flex: 1}} />
         <Text style={styles.optionTextSelect}>Light</Text>
+        <Switch
+        trackColor={{false: '#767577', true: '#81b0ff'}}
+        thumbColor={isEnabledMode ? '#f5dd4b' : '#f4f3f4'}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={()=>{
+          setEnabledMode(!isEnabledMode)
+        }}
+        value={isEnabledMode}
+      />
+        
       </View>
 
       <View style={styles.option}>
@@ -43,6 +65,11 @@ const Setting = () => {
         <Text style={styles.optionText}>Ngôn ngữ</Text>
         <View style={{flex: 1}} />
         <Text style={styles.optionTextSelect}>English</Text>
+        <SelectList 
+        setSelected={(val) => setSelected(val)} 
+        data={Language} 
+        save="value"
+    />
       </View>
 
       <View style={{
@@ -56,19 +83,19 @@ const Setting = () => {
       </View>
 
       <View style={styles.optionF}>
-        <Ionicons style={[styles.optionIcon, styles.mutedIcon]} name="swap-horizontal-outline" />
+        <Ionicons style={[styles.optionIcon, styles.mutedIcon]} name="thermometer-outline" />
         <Text style={styles.optionText}>Đơn vị đo nhiệt độ</Text>
         <View style={{flex: 1}} />
         <Text style={styles.optionTextSelect}>Độ C</Text>
       </View>
       <View style={styles.option}>
-        <Ionicons style={[styles.optionIcon, styles.mutedIcon]} name="swap-horizontal-outline" />
+        <Ionicons style={[styles.optionIcon, styles.mutedIcon]} name="speedometer-outline" />
         <Text style={styles.optionText}>Đơn vị đo tốc độ gió</Text>
         <View style={{flex: 1}} />
         <Text style={styles.optionTextSelect}>km/h</Text>
       </View>
       <View style={styles.option}>
-        <Ionicons style={[styles.optionIcon, styles.mutedIcon]} name="swap-horizontal-outline" />
+        <Ionicons style={[styles.optionIcon, styles.mutedIcon]} name="planet-outline" />
         <Text style={styles.optionText}>Đơn vị áp suất</Text>
         <View style={{flex: 1}} />
         <Text style={styles.optionTextSelect}>mbar</Text>
