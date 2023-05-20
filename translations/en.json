@@ -5,9 +5,13 @@
     "windSpeed": "Wind Speed",
     "searchPlaceholder": "Search Placeholder",
     "feels_like": "Feels Like:",
-    "clouds": "Clouds",
+    "clouds": "Change of rain",
     "pressure": "Pressure",
     "wind_speed": "Wind Speed",
-    "uvi": "UV Index"
+    "uvi": "UV Index",
+    "setting" : "Setting",
+  "language" : "Language",
+  "mode": "Mode",
+  "measure": "Measure"
 }
   

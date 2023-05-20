@@ -24,16 +24,16 @@ const Setting = () => {
   };
   
   const Language = [
-      {key:'1', value:'Việt Nam'},
-      {key:'2', value:'English'},
-      {key:'3', value:'中國人'},
+      {key:'1', value:'Tiếng Việt'},
+      {key:'2', value:'Tiếng Anh'},
+      {key:'3', value:'Tiếng Trung'},
       
   ]
 
   const Temperature = [
-    {key:'1', value:'°C'},
-    {key:'2', value:'°F'},
-    {key:'3', value:'°K'},
+    {key:'1', value:'  ° C'},
+    {key:'2', value:'  ° F'},
+    {key:'3', value:'  ° K'},
     
 ]
 
@@ -79,7 +79,7 @@ const Pressure = [
         <Text style={styles.optionTextSelect}>Light</Text>
         <Switch
         trackColor={{false: '#767577', true: '#81b0ff'}}
-        thumbColor={isEnabledMode ? '#f5dd4b' : '#f4f3f4'}
+        thumbColor={isEnabledMode ? 'white' : '#f4f3f4'}
         ios_backgroundColor="#3e3e3e"
         onValueChange={()=>{
           setEnabledMode(!isEnabledMode)
@@ -97,9 +97,12 @@ const Pressure = [
         <SelectList 
         setSelected={(val) => setSelectedLanguage(val)} 
         data={Language} 
+        searchicon={<View />}
+        searchPlaceholder=""
         save="value"
-        defaultOption= "Việt Nam"
-        placeholder= "Việt Nam"
+        defaultOption= "Tiếng Việt"
+        placeholder= "Tiếng Việt"
+        onSelect={handleSelect}
     />
       </View>
 
@@ -119,10 +122,13 @@ const Pressure = [
         <View style={{flex: 1}} />
         <SelectList 
         setSelected={(val) => setSelectedTemperature(val)} 
+        searchPlaceholder=""
+        searchicon={<View />}
         data={Temperature} 
         save="value"
-        placeholder= "°C"
-        defaultOption= "°C"
+        placeholder= "° C"
+        defaultOption= "° C"
+        onSelect={handleSelect}
     />
       </View>
       <View style={styles.option}>
@@ -132,10 +138,13 @@ const Pressure = [
         
         <SelectList 
         setSelected={(val) => setSelectedWindSpeed(val)} 
+        searchPlaceholder=""
+        searchicon={<View />}
         data={WindSpeed} 
         save="value"
         placeholder= "km/h"
         defaultOption= "km/h"
+        onSelect={handleSelect}
     />
       </View>
       <View style={styles.option}>
@@ -145,10 +154,13 @@ const Pressure = [
         
         <SelectList 
         setSelected={(val) => setSelectedPressure(val)} 
+        searchPlaceholder=""
+        searchicon={<View />}
         data={Pressure} 
         save="value"
         placeholder= "mbar"
         defaultOption= "mbar"
+        onSelect={handleSelect}
     />
       </View>
       <View style={styles.option}>
