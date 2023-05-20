@@ -19,6 +19,8 @@ import {
 } from "../assets/index";
 import Forecast from "./ForecastCurrent";
 import { API_KEY } from "../constants";
+import Svg, { Circle } from "react-native-svg";
+import SunCycle from "./SunCycle";
 
 const Weather = ({ weatherData, setWeatherData, forecast }) => {
   const [backgroundImage, setBackgroundImage] = useState(null);
@@ -150,125 +152,161 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
           <View style={styles.forecastContainer}>
             <Forecast forecast={forecast} />
           </View>
-          <View style={styles.infoA}>
-            <View style={{ flex: 1 }}>
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  lineHeight: 30,
-                  fontSize: 20,
-                  color: "white",
-                }}>
-                Cảm giác như:
-              </Text>
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  lineHeight: 50,
-                  fontSize: 30,
-                  paddingBottom: 10,
-                  color: "white",
-                }}>
-                {feels_like} °C
-              </Text>
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  lineHeight: 30,
-                  fontSize: 20,
-                  color: "white",
-                }}>
-                Độ ẩm:
-              </Text>
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  lineHeight: 50,
-                  fontSize: 30,
-                  paddingBottom: 10,
-                  color: "white",
-                }}>
-                {humidity} %
-              </Text>
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  lineHeight: 30,
-                  fontSize: 20,
-                  color: "white",
-                }}>
-                Có thể mưa:
-              </Text>
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  lineHeight: 50,
-                  fontSize: 30,
-                  paddingBottom: 10,
-                  color: "white",
-                }}>
-                {current?.current?.clouds} %
-              </Text>
-            </View>
+          <View>
+            <View style={styles.infoA}>
+              <View style={{ alignItems: "center" }}>
+                <SunCycle
+                  sunrise={6}
+                  sunset={18}
+                  current={new Date().getHours()}
+                />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    marginBottom: 40,
+                  }}>
+                  <Text
+                    style={{
+                      // paddingLeft: 10,
+                      marginLeft: 60,
+                      fontSize: 15,
+                      color: "white",
+                    }}>
+                    Bình minh: 6:00
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: "white",
+                    }}>
+                    Hoàng hôn: 18:00
+                  </Text>
+                </View>
+              </View>
 
-            <View style={{ flex: 1 }}>
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  lineHeight: 30,
-                  fontSize: 20,
-                  color: "white",
-                }}>
-                Áp suất:
-              </Text>
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  lineHeight: 50,
-                  fontSize: 30,
-                  paddingBottom: 10,
-                  color: "white",
-                }}>
-                {pressure} mbar
-              </Text>
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  lineHeight: 30,
-                  fontSize: 20,
-                  color: "white",
-                }}>
-                Tốc độ gió:
-              </Text>
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  lineHeight: 50,
-                  fontSize: 30,
-                  paddingBottom: 10,
-                  color: "white",
-                }}>
-                {current?.current?.wind_speed} km/h
-              </Text>
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  lineHeight: 30,
-                  fontSize: 20,
-                  color: "white",
-                }}>
-                Chỉ số UV:
-              </Text>
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  lineHeight: 50,
-                  fontSize: 30,
-                  paddingBottom: 10,
-                  color: "white",
-                }}>
-                {current?.current?.uvi}
-              </Text>
+              <View style={{ flex: 1, flexDirection: "row" }}>
+                <View style={{ flex: 1 }}>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      lineHeight: 30,
+                      fontSize: 20,
+                      color: "white",
+                    }}>
+                    Cảm giác như:
+                  </Text>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      lineHeight: 50,
+                      fontSize: 30,
+                      paddingBottom: 10,
+                      color: "white",
+                    }}>
+                    {feels_like} °C
+                  </Text>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      lineHeight: 30,
+                      fontSize: 20,
+                      color: "white",
+                    }}>
+                    Độ ẩm:
+                  </Text>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      lineHeight: 50,
+                      fontSize: 30,
+                      paddingBottom: 10,
+                      color: "white",
+                    }}>
+                    {humidity} %
+                  </Text>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      lineHeight: 30,
+                      fontSize: 20,
+                      color: "white",
+                    }}>
+                    Có thể mưa:
+                  </Text>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      lineHeight: 50,
+                      fontSize: 30,
+                      paddingBottom: 10,
+                      color: "white",
+                    }}>
+                    {current?.current?.clouds} %
+                  </Text>
+                </View>
+
+                <View style={{ flex: 1 }}>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      lineHeight: 30,
+                      fontSize: 20,
+                      color: "white",
+                    }}>
+                    Áp suất:
+                  </Text>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      lineHeight: 50,
+                      fontSize: 30,
+                      paddingBottom: 10,
+                      color: "white",
+                    }}>
+                    {pressure} mbar
+                  </Text>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      lineHeight: 30,
+                      fontSize: 20,
+                      color: "white",
+                    }}>
+                    Tốc độ gió:
+                  </Text>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      lineHeight: 50,
+                      fontSize: 30,
+                      paddingBottom: 10,
+                      color: "white",
+                    }}>
+                    {current?.current?.wind_speed} km/h
+                  </Text>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      lineHeight: 30,
+                      fontSize: 20,
+                      color: "white",
+                    }}>
+                    Chỉ số UV:
+                  </Text>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      lineHeight: 50,
+                      fontSize: 30,
+                      paddingBottom: 10,
+                      color: "white",
+                    }}>
+                    {current?.current?.uvi}
+                  </Text>
+                </View>
+              </View>
             </View>
           </View>
         </ImageBackground>
@@ -328,7 +366,7 @@ const styles = StyleSheet.create({
   },
   infoA: {
     // width: Dimensions.get("screen").width / 2.5,
-    height: 300,
+    minHeight: 300,
     backgroundColor: "rgba(0,0,0, 0.5)",
     // padding: 10,
     paddingTop: 20,
@@ -339,7 +377,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     fontWeight: "bold",
-    flexDirection: "row",
+    flexDirection: "column",
   },
 });
 

@@ -8,9 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Location = ({ location }) => {
-  // const { location } = route.params;
   const [weatherData, setWeatherData] = useState(null);
-  const navigator = useNavigation();
   const [loaded, setLoaded] = useState(true);
 
   const fetchWeatherData = async () => {
@@ -22,6 +20,7 @@ const Location = ({ location }) => {
     }
     setLoaded(true);
   };
+
   const url = `http://api.openweathermap.org/data/2.5/onecall?units=metric&eclude=minutely&appid=${API_KEY}`;
   const [forecast, setForecast] = useState(null);
 
@@ -86,35 +85,6 @@ const Location = ({ location }) => {
         setWeatherData={setWeatherData}
         forecast={forecast}
       />
-      <View
-        style={{
-          position: "absolute",
-          alignItems: "center",
-          justifyContent: "center",
-          top: 30,
-          right: 10,
-          zIndex: 100,
-        }}>
-        {/* <Button
-          title="Thích"
-          buttonStyle={{ fontSize: 50 }}
-          onPress={() => {
-            AsyncStorage.getItem("location").then((locations) => {
-              const newLocations = JSON.parse(locations) || [];
-              if (newLocations.includes(location)) {
-                return;
-              }
-              newLocations.push(location);
-              AsyncStorage.setItem(
-                "location",
-                JSON.stringify(newLocations)
-              ).then(() => {
-                navigator.navigate("Favorite");
-              });
-            });
-          }}
-        /> */}
-      </View>
     </View>
   );
 };

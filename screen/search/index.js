@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   ImageBackground,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { Button, SearchBar, Text, ListItem, Icon } from "react-native-elements";
 import axios from "axios";
@@ -18,6 +19,7 @@ const Search = () => {
   const [favoriteCities, setFavoriteCities] = useState([]);
   const [suggestedCities, setSuggestedCities] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [data, setData] = useState([]);
   const navigator = useNavigation();
   const convert = async (data) => {
     if (data) {
@@ -40,6 +42,7 @@ const Search = () => {
         if (!data) {
           return;
         }
+        setData(JSON.parse(data));
         return JSON.parse(data);
       })
       .then((data) => {
@@ -62,7 +65,7 @@ const Search = () => {
       };
     });
 
-    setSuggestedCities(matchedCities.slice(0, 7));
+    setSuggestedCities(matchedCities.slice(0, 20));
   };
 
   const handleSelectCity = (cityName) => {
@@ -73,38 +76,47 @@ const Search = () => {
   useEffect(() => {
     console.log("Search");
     loadFavouriteWeather();
-    // AsyncStorage.setItem("location", "Ha Noi");
     AsyncStorage.getItem("location").then((data) => {
       console.log(data);
     });
   }, []);
 
-  const renderItem = ({ item }) => {
-    console.log(item);
-    return (
-      <Button
-        title={item.name}
-        type="outline"
-        containerStyle={{ marginVertical: 5 }}
-        onPress={() => {
-          handleSelectCity(item.name);
-          navigator.navigate("Info", { location: item.name });
-          setValue("");
-        }}
-        style={{ padding: 10 }}
-      />
-    );
-  };
-
   const renderSuggestedCities = () => {
     console.log(suggestedCities);
     if (suggestedCities.length > 0) {
       return (
-        <FlatList
-          data={suggestedCities}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.name}
-        />
+        <ScrollView
+          contentContainerStyle={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            marginBottom: 10,
+            marginTop: 30,
+          }}>
+          {suggestedCities.map((item) => (
+            <TouchableOpacity
+              key={item.name}
+              onPress={() => {
+                handleSelectCity(item.name);
+                navigator.navigate("Info", { location: item.name });
+                setValue("");
+              }}
+              style={{
+                backgroundColor: "rgba(0,0,0,0.06)",
+                marginVertical: 5,
+                borderRadius: 20,
+                padding: 10,
+                marginLeft: 15,
+              }}>
+              {data?.includes(item.name) ? (
+                <Text style={{ color: "#2F58CD" }}>{item.name}</Text>
+              ) : (
+                <Text>{item.name}</Text>
+              )}
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       );
     } else {
       return null;
@@ -142,7 +154,7 @@ const Search = () => {
                 fontSize: 35,
                 textAlign: "center",
               }}>
-              Quản lý thành phố 
+              Quản lý thành phố
             </Text>
           </View>
         </View>

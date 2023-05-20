@@ -11,7 +11,6 @@ import { Text } from "react-native-elements";
 import { getCurrentData } from "../../api/weatherAPI";
 
 const Favorite = () => {
-  // const { location } = route.params;
   const [favoriteCities, setFavoriteCities] = useState([]);
   const navigator = useNavigation();
   const convert = async (data) => {

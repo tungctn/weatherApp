@@ -126,7 +126,9 @@ const ForecastDay = ({ route }) => {
                 }>
                 <Text style={{ color: "black" }}>
                   <Text style={{ color: "black" }}>
-                    {index === 0 ? "Hôm nay" : daysOfWeek[dt.getDay()]}
+                    {index === 0 && "Hôm nay"}
+                    {index === 1 && "Ngày mai"}
+                    {index > 1 && daysOfWeek[dt.getDay()]}
                   </Text>
                 </Text>
                 <Text style={{ color: "black" }}>

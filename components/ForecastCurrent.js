@@ -21,7 +21,7 @@ const Forecast = ({ forecast }) => {
           horizontal
           data={forecast?.hourly?.slice(0, 24)}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             const weather = item.weather[0];
             let dt = new Date(item.dt * 1000);
             return (
@@ -36,7 +36,9 @@ const Forecast = ({ forecast }) => {
                     margin: 5,
                   },
                 ]}>
-                <Text style={{ color: "white" }}>{dt.getHours()}:00</Text>
+                <Text style={{ color: "white" }}>
+                  {index === 0 ? "Bây giờ" : `${dt.getHours()}:00`}
+                </Text>
                 <Text
                   style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>
                   {Math.round(item.temp)}°
