@@ -49,74 +49,128 @@ const Setting = () => {
 
   return (
     <ScrollView>
-      <View style={{ flex: 1, backgroundColor: "#fff" }}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Ionicons
+            style={styles.backButton}
+            name="arrow-back-circle-outline"
+            onPress={handleBackButtonPress}
+          />
+          <Text style={styles.title}>Cài đặt ứng dụng</Text>
+        </View>
         <View
           style={{
-            flex: 0.1,
-            flexDirection: "row",
-            marginTop: 50,
-            marginLeft: 10,
+            height: 40,
+            backgroundColor: "rgba(0,0,0,0.2)",
+            justifyContent: "center",
+            marginTop: 40,
           }}>
-          <Ionicons
-            style={{ fontSize: 40 }}
-            name="arrow-back-circle-outline"
-            onPress={() => {
-              navigator.goBack();
-            }}
-          />
-          <View style={{ flex: 1, alignSelf: "center" }}>
-            <Text
-              style={{
-                fontSize: 28,
-                textAlign: "center",
-              }}>
-              Cài đặt ứng dụng
-            </Text>
-          </View>
+          <Text style={styles.optionText}> Chung </Text>
         </View>
-        <View style={{ marginTop: 40, flex: 0.1, flexDirection: "row" }}>
-          <Text
-            style={{
-              fontSize: 20,
-            }}>
-            Chế độ
-          </Text>
+
+        <View style={styles.optionF}>
           <Ionicons
-            style={{ fontSize: 40, flex: 1 }}
+            style={[styles.optionIcon, styles.mutedIcon]}
             name="contrast-outline"
-            onPress={() => {
-              "";
+          />
+          <Text style={styles.optionText}>Chế độ</Text>
+          <View style={{ flex: 1 }} />
+          <Text style={styles.optionTextSelect}>Light</Text>
+          <Switch
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={isEnabledMode ? "white" : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={() => {
+              setEnabledMode(!isEnabledMode);
             }}
+            value={isEnabledMode}
           />
         </View>
-        <View style={{ marginTop: 40, flex: 0.1, flexDirection: "row" }}>
-          <Text
-            style={{
-              fontSize: 20,
-            }}>
-            Ngôn ngữ
-          </Text>
+
+        <View style={styles.option}>
           <Ionicons
-            style={{ fontSize: 40, flex: 1 }}
+            style={[styles.optionIcon, styles.mutedIcon]}
             name="language-outline"
-            onPress={() => {
-              "";
-            }}
+          />
+          <Text style={styles.optionText}>Ngôn ngữ</Text>
+          <View style={{ flex: 1 }} />
+
+          <SelectList
+            setSelected={(val) => setSelectedLanguage(val)}
+            data={Language}
+            searchicon={<View />}
+            searchPlaceholder=""
+            save="value"
+            defaultOption="Tiếng Việt"
+            placeholder="Tiếng Việt"
+            onSelect={handleSelect}
           />
         </View>
-        <View style={{ marginTop: 40, flex: 0.1, flexDirection: "row" }}>
-          <Text
-            style={{
-              fontSize: 20,
-            }}>
-            Đơn vị
-          </Text>
+
+        <View
+          style={{
+            height: 40,
+            backgroundColor: "rgba(0,0,0,0.2)",
+            justifyContent: "center",
+            marginTop: 40,
+          }}>
+          <Text style={styles.optionText}> Đơn vị </Text>
+        </View>
+
+        <View style={styles.optionF}>
           <Ionicons
-            style={{ fontSize: 40, flex: 1 }}
-            name="swap-horizontal-outline"
-            onPress={() => {
-              "";
-            }}
+            style={[styles.optionIcon, styles.mutedIcon]}
+            name="thermometer-outline"
+          />
+          <Text style={styles.optionText}>Đơn vị đo nhiệt độ</Text>
+          <View style={{ flex: 1 }} />
+          <SelectList
+            setSelected={(val) => setSelectedTemperature(val)}
+            searchPlaceholder=""
+            searchicon={<View />}
+            data={Temperature}
+            save="value"
+            placeholder="° C"
+            defaultOption="° C"
+            onSelect={handleSelect}
+          />
+        </View>
+        <View style={styles.option}>
+          <Ionicons
+            style={[styles.optionIcon, styles.mutedIcon]}
+            name="speedometer-outline"
+          />
+          <Text style={styles.optionText}>Đơn vị đo tốc độ gió</Text>
+          <View style={{ flex: 1 }} />
+
+          <SelectList
+            setSelected={(val) => setSelectedWindSpeed(val)}
+            searchPlaceholder=""
+            searchicon={<View />}
+            data={WindSpeed}
+            save="value"
+            placeholder="km/h"
+            defaultOption="km/h"
+            onSelect={handleSelect}
+          />
+        </View>
+        <View style={styles.option}>
+          <Ionicons
+            style={[styles.optionIcon, styles.mutedIcon]}
+            name="planet-outline"
+          />
+          <Text style={styles.optionText}>Đơn vị áp suất</Text>
+          <View style={{ flex: 1 }} />
+
+          <SelectList
+            setSelected={(val) => setSelectedPressure(val)}
+            searchPlaceholder=""
+            searchicon={<View />}
+            data={Pressure}
+            save="value"
+            placeholder="mbar"
+            defaultOption="mbar"
+            onSelect={handleSelect}
           />
         </View>
         <View style={styles.option}>
