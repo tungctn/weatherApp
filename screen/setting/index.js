@@ -17,6 +17,11 @@ const Setting = () => {
   const [selectedTemperature, setSelectedTemperature] = React.useState("");
   const [selectedWindSpeed, setSelectedWindSpeed] = React.useState("");
   const [selectedPressure, setSelectedPressure] = React.useState("");
+
+  const handleSelect = (value) => {
+    console.log("Selected value:", value);
+    // Thực hiện hành động mong muốn khi giá trị được chọn
+  };
   
   const Language = [
       {key:'1', value:'Việt Nam'},
@@ -40,8 +45,8 @@ const WindSpeed = [
 ]
 
 const Pressure = [
-  {key:'1', value:'atm'},
-  {key:'2', value:'mbar'},
+  {key:'1', value:'mbar'},
+  {key:'2', value:'atm'},
   {key:'3', value:'hPa'},
   
 ]
@@ -90,7 +95,7 @@ const Pressure = [
         <View style={{flex: 1}} />
         
         <SelectList 
-        setSelected={(val) => setSelected(val)} 
+        setSelected={(val) => setSelectedLanguage(val)} 
         data={Language} 
         save="value"
         defaultOption= "Việt Nam"
@@ -113,9 +118,11 @@ const Pressure = [
         <Text style={styles.optionText}>Đơn vị đo nhiệt độ</Text>
         <View style={{flex: 1}} />
         <SelectList 
-        setSelected={(val) => setSelected(val)} 
+        setSelected={(val) => setSelectedTemperature(val)} 
         data={Temperature} 
         save="value"
+        placeholder= "°C"
+        defaultOption= "°C"
     />
       </View>
       <View style={styles.option}>
@@ -124,9 +131,11 @@ const Pressure = [
         <View style={{flex: 1}} />
         
         <SelectList 
-        setSelected={(val) => setSelected(val)} 
+        setSelected={(val) => setSelectedWindSpeed(val)} 
         data={WindSpeed} 
         save="value"
+        placeholder= "km/h"
+        defaultOption= "km/h"
     />
       </View>
       <View style={styles.option}>
@@ -135,9 +144,11 @@ const Pressure = [
         <View style={{flex: 1}} />
         
         <SelectList 
-        setSelected={(val) => setSelected(val)} 
+        setSelected={(val) => setSelectedPressure(val)} 
         data={Pressure} 
         save="value"
+        placeholder= "mbar"
+        defaultOption= "mbar"
     />
       </View>
       <View style={styles.option}>
