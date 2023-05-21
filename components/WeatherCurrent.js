@@ -164,7 +164,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   color: "white",
                   fontWeight: "bold",
                 }}>
-                {pressure} hPa
+                {pressure} mbar
               </Text>
             </View>
           </View>
