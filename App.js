@@ -14,10 +14,10 @@ import ThemeContext from "./ThemeContext";
 import ThemeProvider from "./ThemeProvider";
 import Setting from "./screen/setting";
 // import WeatherApp from "./screen/weather";
-import {
-  ConfirmModalProvider,
-  useConfirmModal,
-} from "@sj-distributor/react-native-confirm-modal";
+// import {
+//   ConfirmModalProvider,
+//   useConfirmModal,
+// } from "@sj-distributor/react-native-confirm-modal";
 
 const Stack = createNativeStackNavigator();
 const App = () => {
