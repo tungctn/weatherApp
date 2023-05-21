@@ -24,6 +24,7 @@ import {
   convertCelsiusToKelvin,
   convertKmToMph,
   convertKmToMs,
+  convertMbarToAtm,
 } from "../constants";
 import Svg, { Circle } from "react-native-svg";
 import SunCycle from "./SunCycle";
@@ -46,6 +47,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
   const [current, setCurrent] = useState(null);
   const [tempMode, setTempMode] = useState(null);
   const [speedMode, setSpeedMode] = useState(null);
+  const [pressureMode, setPressureMode] = useState(null);
   const url = `http://api.openweathermap.org/data/2.5/onecall?units=metric&eclude=minutely&appid=${API_KEY}`;
   const loadCurrent = async () => {
     const response = await fetch(
@@ -82,6 +84,9 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
     });
     AsyncStorage.getItem("speed").then((value) => {
       setSpeedMode(value);
+    });
+    AsyncStorage.getItem("pressure").then((value) => {
+      setPressureMode(value);
     });
   }, [weatherData, isFocused]);
 
@@ -292,7 +297,10 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       paddingBottom: 10,
                       color: "white",
                     }}>
-                    {pressure} mbar
+                    {pressureMode == "mbar" && `${pressure} mbar`}
+                    {pressureMode == "atm" &&
+                      `${convertMbarToAtm(pressure)} atm`}
+                    {pressureMode == "hPa" && `${pressure} hPa`}
                   </Text>
                   <Text
                     style={{
