@@ -225,7 +225,7 @@ const Setting = () => {
           <View style={{ flex: 1 }} />
 
           <SelectList
-            setSelected={(val) => setSelectedPressure(val)}
+            setSelected={setSelectedPressure}
             searchPlaceholder=""
             searchicon={<View />}
             data={Pressure}
