@@ -13,7 +13,6 @@ const MyPager = ({}) => {
   const isFocused = useIsFocused();
   const [data, setData] = useState([]);
   const navigator = useNavigation();
-  
 
   useEffect(() => {
     AsyncStorage.getItem("location").then((data) => {
@@ -22,7 +21,10 @@ const MyPager = ({}) => {
       console.log(list);
       const newList = ["Hanoi"].concat(list);
       setData(newList);
-    })
+    });
+    AsyncStorage.getItem("temp").then((data) => {
+      console.log(data);
+    });
   }, [isFocused]);
 
   const handleAddButtonPress = () => {
@@ -43,12 +45,12 @@ const MyPager = ({}) => {
       </View>
 
       <View style={{ position: "absolute", top: 50, right: 10, zIndex: 1 }}>
-      <TouchableOpacity onPress={handleSetButtonPress}>
-        <View style={styles.circleButton}>
-          <FontAwesome name="cog" size={30} color="white" />
-        </View>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity onPress={handleSetButtonPress}>
+          <View style={styles.circleButton}>
+            <FontAwesome name="cog" size={30} color="white" />
+          </View>
+        </TouchableOpacity>
+      </View>
 
       <PagerView style={styles.viewPager} initialPage={0}>
         {data?.map((item, index) => {

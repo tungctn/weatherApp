@@ -9,10 +9,15 @@ import {
   ImageBackground,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import { Button, SearchBar, Text, ListItem, Icon } from "react-native-elements";
 import axios from "axios";
 import { getCurrentData } from "../../api/weatherAPI";
+import {
+  ConfirmModalProvider,
+  useConfirmModal,
+} from "@sj-distributor/react-native-confirm-modal";
 
 const Search = () => {
   const [value, setValue] = useState("");
@@ -123,6 +128,35 @@ const Search = () => {
     }
   };
 
+  const showConfirmDialog = (cityName) => {
+    return Alert.alert(
+      "Are your sure?",
+      "Are you sure you want to remove this city from your favorites?",
+      [
+        {
+          text: "Yes",
+          onPress: () => {
+            setFavoriteCities((prev) => {
+              let newLocations = prev.filter((city) => {
+                return city.name !== cityName;
+              });
+
+              let news = newLocations.map((city) => {
+                return city.name;
+              });
+
+              AsyncStorage.setItem("location", JSON.stringify(news));
+              return newLocations;
+            });
+          },
+        },
+        {
+          text: "No",
+        },
+      ]
+    );
+  };
+
   useEffect(() => {
     AsyncStorage.getItem("location").then((data) => {
       if (data) {
@@ -204,18 +238,7 @@ const Search = () => {
                 rightContent={
                   <TouchableOpacity
                     onPress={() => {
-                      setFavoriteCities((prev) => {
-                        let newLocations = prev.filter((city) => {
-                          return city.name !== item.name;
-                        });
-
-                        let news = newLocations.map((city) => {
-                          return city.name;
-                        });
-
-                        AsyncStorage.setItem("location", JSON.stringify(news));
-                        return newLocations;
-                      });
+                      showConfirmDialog(item.name);
                     }}
                     style={{
                       backgroundColor: "red",

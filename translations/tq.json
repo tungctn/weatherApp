@@ -1,12 +1,12 @@
 {
-"temperature": "温度",
-"humidity": "湿度",
-"windSpeed": "风速",
-"searchPlaceholder": "搜索",
-"feels_like": "体感温度",
-"clouds": "云量",
-"pressure": "气压",
-"wind_speed": "风速",
-"uvi": "紫外线指数",
-"appTitle": "天氣應用"
+    "temperature": "温度",
+    "humidity": "湿度",
+    "windSpeed": "风速",
+    "searchPlaceholder": "搜索",
+    "feels_like": "体感温度",
+    "clouds": "云量",
+    "pressure": "气压",
+    "wind_speed": "风速",
+    "uvi": "紫外线指数",
+    "appTitle": "天氣應用"
 }

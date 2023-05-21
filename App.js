@@ -14,14 +14,20 @@ import ThemeContext from "./ThemeContext";
 import ThemeProvider from "./ThemeProvider";
 import Setting from "./screen/setting";
 // import WeatherApp from "./screen/weather";
+import {
+  ConfirmModalProvider,
+  useConfirmModal,
+} from "@sj-distributor/react-native-confirm-modal";
 
 const Stack = createNativeStackNavigator();
 const App = () => {
+  const { t } = useTranslation();
   useEffect(() => {
     AsyncStorage.getItem("location").then((data) => {
       console.log(data);
     });
   }, []);
+  const SearchWithModalProvider = () => <Search />;
 
   return (
     <I18nextProvider i18n={i18n}>
@@ -53,7 +59,7 @@ const App = () => {
           />
           <Stack.Screen
             name="Search"
-            component={Search}
+            component={SearchWithModalProvider}
             options={{
               title: "Search",
               headerShown: false,

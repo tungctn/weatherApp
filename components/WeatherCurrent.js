@@ -18,21 +18,34 @@ import {
   tempImg,
 } from "../assets/index";
 import Forecast from "./ForecastCurrent";
-import { API_KEY } from "../constants";
+import {
+  API_KEY,
+  convertCelsiusToFahrenheit,
+  convertCelsiusToKelvin,
+  convertKmToMph,
+  convertKmToMs,
+} from "../constants";
 import Svg, { Circle } from "react-native-svg";
 import SunCycle from "./SunCycle";
+import { useTranslation } from "react-i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/native";
 
 const Weather = ({ weatherData, setWeatherData, forecast }) => {
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [state, setState] = useState();
+  const isFocused = useIsFocused();
   const {
     weather,
     name,
     main: { temp, humidity, pressure, feels_like },
     wind: { speed },
   } = weatherData;
+  const { t } = useTranslation();
 
   const [current, setCurrent] = useState(null);
+  const [tempMode, setTempMode] = useState(null);
+  const [speedMode, setSpeedMode] = useState(null);
   const url = `http://api.openweathermap.org/data/2.5/onecall?units=metric&eclude=minutely&appid=${API_KEY}`;
   const loadCurrent = async () => {
     const response = await fetch(
@@ -64,7 +77,13 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
     } else {
       setState("Trời mưa");
     }
-  }, [weatherData]);
+    AsyncStorage.getItem("temp").then((value) => {
+      setTempMode(value);
+    });
+    AsyncStorage.getItem("speed").then((value) => {
+      setSpeedMode(value);
+    });
+  }, [weatherData, isFocused]);
 
   const getBackgroundImg = (weather) => {
     if (weather === "Snow") return snow;
@@ -195,7 +214,8 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       fontSize: 20,
                       color: "white",
                     }}>
-                    Cảm giác như:
+                    {/* Cảm giác như: */}
+                    {t("feels_like")}
                   </Text>
                   <Text
                     style={{
@@ -205,7 +225,11 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       paddingBottom: 10,
                       color: "white",
                     }}>
-                    {feels_like} °C
+                    {tempMode === "Celsius" && `${feels_like} °C`}
+                    {tempMode === "Fahrenheit" &&
+                      `${convertCelsiusToFahrenheit(feels_like)} °F`}
+                    {tempMode === "Kelvin" &&
+                      `${convertCelsiusToKelvin(feels_like)} K`}
                   </Text>
                   <Text
                     style={{
@@ -214,7 +238,8 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       fontSize: 20,
                       color: "white",
                     }}>
-                    Độ ẩm:
+                    {/* Độ ẩm: */}
+                    {t("humidity")}
                   </Text>
                   <Text
                     style={{
@@ -233,7 +258,8 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       fontSize: 20,
                       color: "white",
                     }}>
-                    Có thể mưa:
+                    {/* Có thể mưa: */}
+                    {t("clouds")}
                   </Text>
                   <Text
                     style={{
@@ -255,7 +281,8 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       fontSize: 20,
                       color: "white",
                     }}>
-                    Áp suất:
+                    {/* Áp suất: */}
+                    {t("pressure")}
                   </Text>
                   <Text
                     style={{
@@ -274,7 +301,8 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       fontSize: 20,
                       color: "white",
                     }}>
-                    Tốc độ gió:
+                    {/* Tốc độ gió: */}
+                    {t("wind_speed")}
                   </Text>
                   <Text
                     style={{
@@ -284,7 +312,12 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       paddingBottom: 10,
                       color: "white",
                     }}>
-                    {current?.current?.wind_speed} km/h
+                    {speedMode == "kmh" &&
+                      `${current?.current?.wind_speed} km/h`}
+                    {speedMode == "ms" &&
+                      `${convertKmToMs(current?.current?.wind_speed)} m/s`}
+                    {speedMode == "mph" &&
+                      `${convertKmToMph(current?.current?.wind_speed)} mph`}
                   </Text>
                   <Text
                     style={{
@@ -293,7 +326,8 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       fontSize: 20,
                       color: "white",
                     }}>
-                    Chỉ số UV:
+                    {/* Chỉ số UV: */}
+                    {t("uvi")}
                   </Text>
                   <Text
                     style={{

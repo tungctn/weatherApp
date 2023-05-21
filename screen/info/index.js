@@ -195,7 +195,9 @@ const ForecastDay = ({ route }) => {
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Image
                     style={{ width: 15, height: 15, marginRight: 5 }}
-                    source={require("../../assets/wind.png")}
+                    source={{
+                      uri: "https://i.pinimg.com/736x/04/58/97/045897378f83762064bf5618e519cf90.jpg",
+                    }}
                   />
                   <Text style={{ color: "black" }}>{item.wind_speed} m/s</Text>
                 </View>
