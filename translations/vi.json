@@ -12,6 +12,27 @@
   "setting" : "Cài đặt",
   "language" : "Ngôn ngữ",
   "mode": "Chế độ",
-  "measure": "Đơn vị"
+  "measure": "Đơn vị",
+  "rainy": "Trời mưa",
+  "sunny": "Trời nắng",
+  "haze": "Sương mù",
+  "snow": "Tuyết",
+  "today": "Hôm nay",
+  "tomorrow": "Ngày mai",
+  "mon": "Thứ hai",
+  "tue": "Thứ ba",
+  "wed": "Thứ tư",
+  "thu": "Thứ năm",
+  "fri": "Thứ sáu",
+  "sat": "Thứ bảy",
+  "sun": "Chủ nhật",
+  "measureOfTemperature": "Đơn vị đo nhiệt độ",
+  "measureOfWindSpeed": "Đơn vị đo tốc độ gió",
+  "measureOfPressure": "Đơn vị đo áp suất",
+  "vn": "Tiếng Việt",
+  "en": "Tiếng Anh",
+  "tq": "Tiếng Trung",
+  "light": "Sáng",
+  "dark": "Tối" 
 }
   

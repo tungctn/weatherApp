@@ -14,10 +14,10 @@ import {
 import { Button, SearchBar, Text, ListItem, Icon } from "react-native-elements";
 import axios from "axios";
 import { getCurrentData } from "../../api/weatherAPI";
-import {
-  ConfirmModalProvider,
-  useConfirmModal,
-} from "@sj-distributor/react-native-confirm-modal";
+// import {
+//   ConfirmModalProvider,
+//   useConfirmModal,
+// } from "@sj-distributor/react-native-confirm-modal";
 
 const Search = () => {
   const [value, setValue] = useState("");

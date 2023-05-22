@@ -12,6 +12,27 @@
   "setting" : "Setting",
   "language" : "Language",
   "mode": "Mode",
-  "measure": "Measure"
+  "measure": "Measure",
+  "rainy": "Rainy",
+  "sunny": "Sunny",
+  "haze": "Haze",
+  "snow": "Snow",
+  "today": "Today",
+  "tomorrow": "Tomorrow",
+  "mon": "Mon",
+  "tue": "Tue",
+  "wed": "Wed",
+  "thu": "Thu",
+  "fri": "Fri",
+  "sat": "Sat",
+  "sun": "Sun",
+  "measureOfTemperature": "Measure Of Temperature",
+  "measureOfWindSpeed": "Measure Of WindSpeed",
+  "measureOfPressure": "Measure Of Pressure",
+  "vn": "Vietnamese",
+  "en": "English",
+  "tq": "Chinese",
+  "light": "Light",
+  "dark": "Dark"
 }
   
