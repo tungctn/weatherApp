@@ -30,8 +30,9 @@ const App = () => {
   });
   Notifications.scheduleNotificationAsync({
     content: {
-      title: "Title of the notification",
-      body: "Body of the notification",
+      title: "Title of the notificationssss",
+      body: "Body of the notificationssss",
+      icon: "https://cdn.weatherapi.com/weather/64x64/day/113.png",
     },
     trigger: {
       seconds: 5, // Delay in seconds
@@ -40,11 +41,13 @@ const App = () => {
 
   const { t } = useTranslation();
   useEffect(() => {
-    AsyncStorage.getItem("location").then((data) => {
-      console.log(data);
-    });
+    (async () => {
+      const { status } = await Notifications.getPermissionsAsync();
+      if (status !== "granted") {
+        await Notifications.requestPermissionsAsync();
+      }
+    })();
   }, []);
-  const SearchWithModalProvider = () => <Search />;
 
   return (
     <I18nextProvider i18n={i18n}>
@@ -76,7 +79,7 @@ const App = () => {
           />
           <Stack.Screen
             name="Search"
-            component={SearchWithModalProvider}
+            component={Search}
             options={{
               title: "Search",
               headerShown: false,

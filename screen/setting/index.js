@@ -129,17 +129,18 @@ const Setting = () => {
           />
           <Text style={styles.optionText}>{t("mode")}</Text>
           <View style={{ flex: 1 }} />
-          <Text style={styles.optionTextSelect}>Light</Text>
+          {/* <Text style={styles.optionTextSelect}>Light</Text> */}
           <Switch
             trackColor={{ false: "#767577", true: "#81b0ff" }}
             thumbColor={isEnabledMode ? "white" : "#f4f3f4"}
             ios_backgroundColor="#3e3e3e"
             onValueChange={() => {
               setEnabledMode(!isEnabledMode);
+              console.log(isEnabledMode);
             }}
             value={isEnabledMode}
           />
-        </View>
+        </View> 
 
         <View style={styles.option}>
           <Ionicons
