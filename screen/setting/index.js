@@ -64,9 +64,9 @@ const Setting = () => {
   };
 
   const Language = [
-    { key: "1", value: "Tiếng Việt" },
-    { key: "2", value: "Tiếng Anh" },
-    { key: "3", value: "Tiếng Trung" },
+    { key: "1", value: t("vn") },
+    { key: "2", value: t("en") },
+    { key: "3", value: t("tq") },
   ];
 
   const Temperature = [
@@ -177,7 +177,7 @@ const Setting = () => {
             style={[styles.optionIcon, styles.mutedIcon]}
             name="thermometer-outline"
           />
-          <Text style={styles.optionText}>Đơn vị đo nhiệt độ</Text>
+          <Text style={styles.optionText}>{t("measureOfTemperature")}</Text>
           <View style={{ flex: 1 }} />
           <SelectList
             setSelected={setSelectedTemperature}
@@ -203,7 +203,7 @@ const Setting = () => {
             style={[styles.optionIcon, styles.mutedIcon]}
             name="speedometer-outline"
           />
-          <Text style={styles.optionText}>Đơn vị đo tốc độ gió</Text>
+          <Text style={styles.optionText}>{t("measureOfWindSpeed")}</Text>
           <View style={{ flex: 1 }} />
 
           <SelectList
@@ -222,7 +222,7 @@ const Setting = () => {
             style={[styles.optionIcon, styles.mutedIcon]}
             name="planet-outline"
           />
-          <Text style={styles.optionText}>Đơn vị áp suất</Text>
+          <Text style={styles.optionText}>{t("measureOfPressure")}</Text>
           <View style={{ flex: 1 }} />
 
           <SelectList
