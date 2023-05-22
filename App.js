@@ -22,22 +22,7 @@ import * as Notifications from "expo-notifications";
 
 const Stack = createNativeStackNavigator();
 const App = () => {
-  Notifications.addNotificationReceivedListener((notification) => {
-    console.log(notification);
-  });
-  Notifications.addNotificationResponseReceivedListener((response) => {
-    console.log(response);
-  });
-  Notifications.scheduleNotificationAsync({
-    content: {
-      title: "Title of the notificationssss",
-      body: "Body of the notificationssss",
-      icon: "https://cdn.weatherapi.com/weather/64x64/day/113.png",
-    },
-    trigger: {
-      seconds: 5, // Delay in seconds
-    },
-  });
+  
 
   const { t } = useTranslation();
   useEffect(() => {

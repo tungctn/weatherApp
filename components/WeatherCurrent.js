@@ -231,7 +231,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   />
                   <Text style={styles.text}>
                     {" "}
-                    Hôm nay-
+                    {t("today")}-
                     {current?.forecast.forecastday[0].day.condition.text}
                   </Text>
                 </View>
@@ -267,7 +267,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   />
                   <Text style={{ ...styles.text }}>
                     {" "}
-                    Ngày mai-
+                    {t("tomorrow")}-
                     {current?.forecast.forecastday[1].day.condition.text}
                   </Text>
                 </View>
@@ -301,7 +301,10 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       uri: `https:${current?.forecast.forecastday[2].day.condition.icon}`,
                     }}
                   />
-                  <Text style={styles.text}> Ngày kia- Nhiều nắng</Text>
+                  <Text style={styles.text}>
+                    {" "}
+                    {t("after_tomorrow")}- Nhiều nắng
+                  </Text>
                 </View>
               </View>
               <View style={{ ...styles.column, flex: 1 }}>

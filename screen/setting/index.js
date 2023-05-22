@@ -6,6 +6,8 @@ import { SelectList } from "react-native-dropdown-select-list";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
+import * as Notifications from "expo-notifications";
+import { getCurrentData } from "../../api/weatherAPI";
 
 const Setting = () => {
   const navigator = useNavigation();
@@ -13,8 +15,9 @@ const Setting = () => {
   const handleBackButtonPress = () => {
     navigator.goBack();
   };
+  const [current, setCurrent] = useState(null);
 
-  const [isEnabledMode, setEnabledMode] = useState(true);
+  const [isEnabledMode, setEnabledMode] = useState(false);
 
   const [selectedLanguage, setSelectedLanguage] = React.useState("");
   const [selectedTemperature, setSelectedTemperature] = React.useState("");
@@ -87,6 +90,13 @@ const Setting = () => {
     { key: "3", value: "hPa" },
   ];
 
+  const loadCurrent = async () => {
+    const response = await getCurrentData("Ha Noi");
+    if (response != null) {
+      setCurrent(response);
+    }
+  };
+
   useEffect(() => {
     AsyncStorage.getItem("temp").then((data) => {
       console.log(data);
@@ -98,7 +108,7 @@ const Setting = () => {
         selectedTemperature("° K");
       }
     });
-    // AsyncStorage.setItem("pressure", "mbar");
+    loadCurrent();
   }, []);
 
   return (
@@ -119,17 +129,16 @@ const Setting = () => {
             justifyContent: "center",
             marginTop: 40,
           }}>
-          <Text style={styles.optionText}> Chung </Text>
+          <Text style={styles.optionText}> {t("chung")} </Text>
         </View>
 
         <View style={styles.optionF}>
           <Ionicons
             style={[styles.optionIcon, styles.mutedIcon]}
-            name="contrast-outline"
+            name="notifications-outline"
           />
           <Text style={styles.optionText}>{t("mode")}</Text>
           <View style={{ flex: 1 }} />
-          {/* <Text style={styles.optionTextSelect}>Light</Text> */}
           <Switch
             trackColor={{ false: "#767577", true: "#81b0ff" }}
             thumbColor={isEnabledMode ? "white" : "#f4f3f4"}
@@ -137,10 +146,28 @@ const Setting = () => {
             onValueChange={() => {
               setEnabledMode(!isEnabledMode);
               console.log(isEnabledMode);
+              Notifications.addNotificationReceivedListener((notification) => {
+                console.log(notification);
+              });
+              Notifications.addNotificationResponseReceivedListener(
+                (response) => {
+                  console.log(response);
+                }
+              );
+              Notifications.scheduleNotificationAsync({
+                content: {
+                  title: `Dự báo thời tiết Hà Nội`,
+                  body: `Nhiệt độ: ${current?.main.temp}°C, ${current?.weather[0].description}`,
+                  icon: "https://cdn.weatherapi.com/weather/64x64/day/113.png",
+                },
+                trigger: {
+                  seconds: 5, // Delay in seconds
+                },
+              });
             }}
             value={isEnabledMode}
           />
-        </View> 
+        </View>
 
         <View style={styles.option}>
           <Ionicons
