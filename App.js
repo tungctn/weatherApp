@@ -13,6 +13,7 @@ import { I18nextProvider, useTranslation } from "react-i18next";
 import ThemeContext from "./ThemeContext";
 import ThemeProvider from "./ThemeProvider";
 import Setting from "./screen/setting";
+import * as Notifications from "expo-notifications";
 // import WeatherApp from "./screen/weather";
 // import {
 //   ConfirmModalProvider,
@@ -21,6 +22,22 @@ import Setting from "./screen/setting";
 
 const Stack = createNativeStackNavigator();
 const App = () => {
+  Notifications.addNotificationReceivedListener((notification) => {
+    console.log(notification);
+  });
+  Notifications.addNotificationResponseReceivedListener((response) => {
+    console.log(response);
+  });
+  Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Title of the notification",
+      body: "Body of the notification",
+    },
+    trigger: {
+      seconds: 5, // Delay in seconds
+    },
+  });
+
   const { t } = useTranslation();
   useEffect(() => {
     AsyncStorage.getItem("location").then((data) => {

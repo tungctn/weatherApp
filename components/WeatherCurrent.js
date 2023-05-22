@@ -230,6 +230,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                     }}
                   />
                   <Text style={styles.text}>
+                    {" "}
                     Hôm nay-
                     {current?.forecast.forecastday[0].day.condition.text}
                   </Text>
@@ -256,7 +257,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                 <View
                   style={{
                     flexDirection: "row",
-                    alignItems: "center",
+                    alignItems: "left",
                   }}>
                   <Image
                     style={{ width: 20, height: 20 }}
@@ -264,7 +265,11 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       uri: `https:${current?.forecast.forecastday[1].day.condition.icon}`,
                     }}
                   />
-                  <Text style={styles.text}>Ngày mai- Nhiều nắng</Text>
+                  <Text style={{ ...styles.text }}>
+                    {" "}
+                    Ngày mai-
+                    {current?.forecast.forecastday[1].day.condition.text}
+                  </Text>
                 </View>
               </View>
               <View style={{ ...styles.column, flex: 1 }}>
@@ -296,7 +301,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       uri: `https:${current?.forecast.forecastday[2].day.condition.icon}`,
                     }}
                   />
-                  <Text style={styles.text}>Ngày kia- Nhiều nắng</Text>
+                  <Text style={styles.text}> Ngày kia- Nhiều nắng</Text>
                 </View>
               </View>
               <View style={{ ...styles.column, flex: 1 }}>
@@ -315,7 +320,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
           <View style={styles.forecastContainer}>
             <Forecast forecast={forecast} current={current} />
           </View>
-          <View>
+          <View style={{ marginBottom: 40 }}>
             <View style={styles.infoA}>
               <View style={{ alignItems: "center" }}>
                 <SunCycle
@@ -425,7 +430,6 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       fontSize: 20,
                       color: "white",
                     }}>
-                    {/* Áp suất: */}
                     {t("pressure")}
                   </Text>
                   <Text
@@ -603,7 +607,8 @@ const styles = StyleSheet.create({
   },
   column: {
     flex: 1,
-    alignItems: "center",
+    alignItems: "left",
+    marginLeft: 10,
   },
   text: {
     color: "white",
