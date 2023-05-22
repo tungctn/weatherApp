@@ -22,21 +22,21 @@ import * as Notifications from "expo-notifications";
 
 const Stack = createNativeStackNavigator();
 const App = () => {
-  Notifications.addNotificationReceivedListener((notification) => {
-    console.log(notification);
-  });
-  Notifications.addNotificationResponseReceivedListener((response) => {
-    console.log(response);
-  });
-  Notifications.scheduleNotificationAsync({
-    content: {
-      title: "Title of the notification",
-      body: "Body of the notification",
-    },
-    trigger: {
-      seconds: 5, // Delay in seconds
-    },
-  });
+  // Notifications.addNotificationReceivedListener((notification) => {
+  //   console.log(notification);
+  // });
+  // Notifications.addNotificationResponseReceivedListener((response) => {
+  //   console.log(response);
+  // });
+  // Notifications.scheduleNotificationAsync({
+  //   content: {
+  //     title: "Title of the notification",
+  //     body: "Body of the notification",
+  //   },
+  //   trigger: {
+  //     seconds: 5, // Delay in seconds
+  //   },
+  // });
 
   const { t } = useTranslation();
   useEffect(() => {
