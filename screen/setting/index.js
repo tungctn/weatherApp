@@ -183,8 +183,8 @@ const Setting = () => {
             searchicon={<View />}
             searchPlaceholder=""
             save="value"
-            defaultOption="Tiếng Việt"
-            placeholder="Tiếng Việt"
+            defaultOption={t("vn")}
+            placeholder={t("vn")}
             onSelect={handleSelect}
           />
         </View>

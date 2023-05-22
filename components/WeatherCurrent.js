@@ -229,11 +229,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       uri: `https:${current?.forecast.forecastday[0].day.condition.icon}`,
                     }}
                   />
-                  <Text style={styles.text}>
-                    {" "}
-                    {t("today")}-
-                    {current?.forecast.forecastday[0].day.condition.text}
-                  </Text>
+                  <Text style={styles.text}> {t("today")}</Text>
                 </View>
               </View>
               <View style={{ ...styles.column, flex: 1 }}>
@@ -247,7 +243,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                 )}°`}</Text>
               </View>
             </View>
-            <View style={styles.row}>
+            <View style={{ ...styles.row }}>
               <View
                 style={{
                   ...styles.column,
@@ -265,11 +261,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       uri: `https:${current?.forecast.forecastday[1].day.condition.icon}`,
                     }}
                   />
-                  <Text style={{ ...styles.text }}>
-                    {" "}
-                    {t("tomorrow")}-
-                    {current?.forecast.forecastday[1].day.condition.text}
-                  </Text>
+                  <Text style={{ ...styles.text }}> {t("tomorrow")}</Text>
                 </View>
               </View>
               <View style={{ ...styles.column, flex: 1 }}>
@@ -301,10 +293,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       uri: `https:${current?.forecast.forecastday[2].day.condition.icon}`,
                     }}
                   />
-                  <Text style={styles.text}>
-                    {" "}
-                    {t("after_tomorrow")}- Nhiều nắng
-                  </Text>
+                  <Text style={styles.text}> {t("after_tomorrow")}</Text>
                 </View>
               </View>
               <View style={{ ...styles.column, flex: 1 }}>
@@ -345,14 +334,14 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       fontSize: 15,
                       color: "white",
                     }}>
-                    Bình minh: 6:00
+                    {t("sunrise")}: 6:00
                   </Text>
                   <Text
                     style={{
                       fontSize: 15,
                       color: "white",
                     }}>
-                    Hoàng hôn: 18:00
+                    {t("sunset")}: 18:00
                   </Text>
                 </View>
               </View>
@@ -611,7 +600,7 @@ const styles = StyleSheet.create({
   column: {
     flex: 1,
     alignItems: "left",
-    marginLeft: 10,
+    marginLeft: 20,
   },
   text: {
     color: "white",
