@@ -29,16 +29,50 @@ const ForecastDay = ({ route }) => {
   const navigator = useNavigation();
   useEffect(() => {
     const loadForecast = async () => {
-      const response1 = await getCurrentData(location);
-      const url = `http://api.openweathermap.org/data/2.5/onecall?units=metric&eclude=minutely&appid=${API_KEY}`;
-      const response = await fetch(
-        `${url}&lat=${response1.coord.lat}&lon=${response1.coord.lon}`
-      );
+      const url = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=c598de62108b5c93a8212f54dc4b2fe0&units=metric&lang=vi`;
+      const response = await fetch(url);
       const data = await response.json();
       if (!response.ok) {
         Alert.alert("Error", data.message);
       } else {
-        setForecast(data);
+        // group data by day
+        const groupedByDay = data.list.reduce((grouped, item, index) => {
+          const date = new Date(item.dt * 1000);
+          const day = date.getDate();
+          if (!grouped[day]) {
+            grouped[day] = [];
+          }
+          grouped[day].push(item);
+          return grouped;
+        }, {});
+
+        // calculate max and min temp for each day
+        const forecastData = Object.values(groupedByDay).map((dayData) => {
+          const maxTemp = Math.max(
+            ...dayData.map((item) => item.main.temp_max)
+          );
+          const minTemp = Math.min(
+            ...dayData.map((item) => item.main.temp_min)
+          );
+          const avgWindSpeed = (
+            dayData.reduce((total, item) => total + item.wind.speed, 0) /
+            dayData.length
+          ).toFixed(2);
+          const firstItem = dayData[0];
+          return {
+            dt: firstItem.dt,
+            weather: firstItem.weather,
+            temp: {
+              max: maxTemp,
+              min: minTemp,
+            },
+            wind: {
+              speed: avgWindSpeed,
+            },
+          };
+        });
+
+        setForecast({ ...data, list: forecastData });
       }
     };
 
@@ -61,11 +95,10 @@ const ForecastDay = ({ route }) => {
       <ScrollView>
         <View
           style={{
-            flex: 0.1,
+            flex: 1,
             flexDirection: "row",
-            marginTop: 50,
+            marginTop: 10,
             marginLeft: 10,
-            marginBottom: 30,
           }}>
           <Ionicons
             style={{ fontSize: 40 }}
@@ -74,31 +107,33 @@ const ForecastDay = ({ route }) => {
               navigator.goBack();
             }}
           />
-          <View style={{ flex: 1, alignSelf: "center" }}>
-            <Text
-              style={{
-                fontSize: 28,
-                textAlign: "center",
-              }}>
-              {location}
-            </Text>
-          </View>
+        </View>
+        <View style={{ flex: 1, marginBottom: 30 }}>
+          <Text
+            style={{
+              fontSize: 40,
+              textAlign: "center",
+              fontWeight: "300",
+            }}>
+            {location}
+          </Text>
         </View>
         <FlatList
           horizontal
-          data={forecast?.daily?.slice(0, 7)}
+          data={forecast?.list}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => {
+            console.log({ forecast: forecast?.list[0].weather });
             const weather = item.weather[0];
-            let dt = new Date(item.dt * 1000);
-            const maxTemp = Math.max(
-              ...forecast?.daily?.map((item) => item.temp.max)
-            );
-            const minTemp = Math.min(
-              ...forecast?.daily?.map((item) => item.temp.min)
-            );
+            const dt = new Date(item.dt * 1000);
             const circleRadius = 5;
             const chartHeight = 20;
+            const maxTemp = Math.max(
+              ...forecast?.list.map((item) => item.temp.max)
+            );
+            const minTemp = Math.min(
+              ...forecast?.list.map((item) => item.temp.min)
+            );
             const range = maxTemp - minTemp;
             const verticalScale = chartHeight / range;
             const circleY = (item.temp.max - minTemp) * verticalScale;
@@ -125,11 +160,9 @@ const ForecastDay = ({ route }) => {
                       ]
                 }>
                 <Text style={{ color: "black" }}>
-                  <Text style={{ color: "black" }}>
-                    {index === 0 && "Hôm nay"}
-                    {index === 1 && "Ngày mai"}
-                    {index > 1 && daysOfWeek[dt.getDay()]}
-                  </Text>
+                  {index === 0 && "Hôm nay"}
+                  {index === 1 && "Ngày mai"}
+                  {index > 1 && daysOfWeek[dt.getDay()]}
                 </Text>
                 <Text style={{ color: "black" }}>
                   {dt.getDate()}/{dt.getMonth() + 1}
@@ -191,7 +224,6 @@ const ForecastDay = ({ route }) => {
                     uri: `http://openweathermap.org/img/w/${weather.icon}.png`,
                   }}
                 />
-
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Image
                     style={{ width: 15, height: 15, marginRight: 5 }}
@@ -199,7 +231,7 @@ const ForecastDay = ({ route }) => {
                       uri: "https://i.pinimg.com/736x/04/58/97/045897378f83762064bf5618e519cf90.jpg",
                     }}
                   />
-                  <Text style={{ color: "black" }}>{item.wind_speed} m/s</Text>
+                  <Text style={{ color: "black" }}>{item.wind.speed} m/s</Text>
                 </View>
               </View>
             );

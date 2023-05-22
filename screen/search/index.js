@@ -66,11 +66,11 @@ const Search = () => {
     console.log(response.data.records);
     const matchedCities = response.data.records?.map((item) => {
       return {
-        name: item.fields.name + ", " + item.fields.cou_name_en,
+        name: item.fields.name,
       };
     });
 
-    setSuggestedCities(matchedCities.slice(0, 20));
+    setSuggestedCities(matchedCities.slice(0, 50));
   };
 
   const handleSelectCity = (cityName) => {
@@ -187,6 +187,7 @@ const Search = () => {
               style={{
                 fontSize: 35,
                 textAlign: "center",
+                fontWeight: "300",
               }}>
               Quản lý thành phố
             </Text>

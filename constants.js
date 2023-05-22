@@ -5,11 +5,11 @@ export const API_KEY = "c598de62108b5c93a8212f54dc4b2fe0";
 // api key 1: 46a9246bebba16d42b36aac3fc3ba8af
 // api key for dev: 4d469d165109399aabceaf38db39bb65
 export const convertCelsiusToFahrenheit = (celsius) => {
-  return ((celsius * 9) / 5 + 32).toFixed(2);
+  return ((celsius * 9) / 5 + 32).toFixed(1);
 };
 
 export const convertCelsiusToKelvin = (celsius) => {
-  return (celsius + 273.15).toFixed(2);
+  return (celsius + 273.15).toFixed(1);
 };
 
 // convert km/h to m/s

@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -8,22 +9,37 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
+import {
+  convertCelsiusToFahrenheit,
+  convertCelsiusToKelvin,
+  convertKmToMph,
+  convertKmToMs,
+} from "../constants";
+import { useIsFocused } from "@react-navigation/native";
 
 const Forecast = ({ forecast }) => {
+  const [tempMode, setTempMode] = useState(null);
+  const [speedMode, setSpeedMode] = useState(null);
+  const isFocused = useIsFocused();
   useEffect(() => {
     console.log({ forecast: forecast });
-  }, []);
+    AsyncStorage.getItem("temp").then((value) => {
+      setTempMode(value);
+    });
+    AsyncStorage.getItem("speed").then((value) => {
+      setSpeedMode(value);
+    });
+  }, [isFocused]);
   return (
     <SafeAreaView>
       {!forecast && <ActivityIndicator size="large" color="black" />}
       <ScrollView>
         <FlatList
           horizontal
-          data={forecast?.hourly?.slice(0, 24)}
+          data={forecast}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => {
-            const weather = item.weather[0];
-            let dt = new Date(item.dt * 1000);
+            let dt = new Date(item.time_epoch * 1000);
             return (
               <View
                 style={[
@@ -34,19 +50,29 @@ const Forecast = ({ forecast }) => {
                     borderRadius: 10,
                     backgroundColor: "rgba(0,0,0,0.5)",
                     margin: 5,
+                    width: 100,
                   },
                 ]}>
                 <Text style={{ color: "white" }}>
                   {index === 0 ? "Bây giờ" : `${dt.getHours()}:00`}
                 </Text>
                 <Text
-                  style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>
-                  {Math.round(item.temp)}°
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    fontSize: 18,
+                    marginTop: 5,
+                  }}>
+                  {tempMode === "Celsius" && `${item.temp_c} °C`}
+                  {tempMode === "Fahrenheit" &&
+                    `${convertCelsiusToFahrenheit(item.temp_c)} °F`}
+                  {tempMode === "Kelvin" &&
+                    `${convertCelsiusToKelvin(item.temp_c)} °K`}
                 </Text>
                 <Image
-                  style={{ width: 40, height: 80 }}
+                  style={{ width: 80, height: 80 }}
                   source={{
-                    uri: `http://openweathermap.org/img/w/${weather.icon}.png`,
+                    uri: `https:${item.condition.icon}`,
                   }}
                 />
 
@@ -55,7 +81,12 @@ const Forecast = ({ forecast }) => {
                     style={{ width: 15, height: 15, marginRight: 5 }}
                     source={require("../assets/wind.png")}
                   />
-                  <Text style={{ color: "white" }}>{item.wind_speed} m/s</Text>
+                  <Text style={{ color: "white" }}>
+                    {speedMode == "kmh" && `${item.wind_kph} km/h`}
+                    {speedMode == "ms" && `${convertKmToMs(item.wind_kph)} m/s`}
+                    {speedMode == "mph" &&
+                      `${convertKmToMph(item.wind_kph)} mph`}
+                  </Text>
                 </View>
               </View>
             );

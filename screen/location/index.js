@@ -21,20 +21,29 @@ const Location = ({ location }) => {
     setLoaded(true);
   };
 
-  const url = `http://api.openweathermap.org/data/2.5/onecall?units=metric&eclude=minutely&appid=${API_KEY}`;
   const [forecast, setForecast] = useState(null);
 
   const loadForecast = async () => {
     const response1 = await getCurrentData(location);
-
+    const lat = response1?.coord?.lat;
+    const lon = response1?.coord?.lon;
     const response = await fetch(
-      `${url}&lat=${response1?.coord.lat}&lon=${response1?.coord.lon}`
+      `https://api.weatherapi.com/v1/forecast.json?key=367cf3477e0345fa8d932522222409&q=${lat},${lon}&days=5`
     );
     const data = await response.json();
     if (!response.ok) {
       Alert.alert("Error", data.message);
     } else {
-      setForecast(data);
+      const date = new Date().getTime() / 1000;
+      const hourForecast1 = data?.forecast?.forecastday[0].hour.filter(
+        (item) => item.time_epoch > date
+      );
+      const hourForecast2 = data?.forecast?.forecastday[0].hour.filter(
+        (item) => item.time_epoch < date
+      );
+      setForecast(
+        [hourForecast2[hourForecast2.length - 1], ...hourForecast1].slice(0, 24)
+      );
     }
   };
 

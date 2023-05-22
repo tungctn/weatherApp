@@ -9,17 +9,9 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import {
-  haze,
-  humidityImg,
-  rainy,
-  snow,
-  sunny,
-  tempImg,
-} from "../assets/index";
+import { haze, rainy, snow, sunny } from "../assets/index";
 import Forecast from "./ForecastCurrent";
 import {
-  API_KEY,
   convertCelsiusToFahrenheit,
   convertCelsiusToKelvin,
   convertKmToMph,
@@ -31,6 +23,7 @@ import SunCycle from "./SunCycle";
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
+import { format, parseISO } from "date-fns";
 
 const Weather = ({ weatherData, setWeatherData, forecast }) => {
   const [backgroundImage, setBackgroundImage] = useState(null);
@@ -48,16 +41,15 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
   const [tempMode, setTempMode] = useState(null);
   const [speedMode, setSpeedMode] = useState(null);
   const [pressureMode, setPressureMode] = useState(null);
-  const url = `http://api.openweathermap.org/data/2.5/onecall?units=metric&eclude=minutely&appid=${API_KEY}`;
+  const url1 = `https://api.weatherapi.com/v1/forecast.json?key=367cf3477e0345fa8d932522222409&q=${weatherData?.coord.lat},${weatherData?.coord.lon}&days=5&lang=vi`;
   const loadCurrent = async () => {
-    const response = await fetch(
-      `${url}&lat=${weatherData?.coord.lat}&lon=${weatherData?.coord.lon}`
-    );
+    const response = await fetch(url1);
     const data = await response.json();
     if (!response.ok) {
       Alert.alert("Error", data.message);
     } else {
-      console.log(data);
+      console.log({ data: data });
+
       setCurrent(data);
     }
   };
@@ -88,6 +80,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
     AsyncStorage.getItem("pressure").then((value) => {
       setPressureMode(value);
     });
+    console.log({ url: `https:${current?.current.condition.icon}` });
   }, [weatherData, isFocused]);
 
   const getBackgroundImg = (weather) => {
@@ -98,7 +91,9 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
     return haze;
   };
 
-  let textColor = "black";
+  let textColor = "white";
+  const currentDate = new Date();
+  const formattedDate = format(currentDate, "dd 'thg' M EEEE");
 
   return (
     <ScrollView>
@@ -110,22 +105,60 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
           }}
           style={styles.backgroundImg}
           resizeMode="cover">
-          <View style={styles.weatherInfo}>
+          <View
+            style={{
+              ...styles.info1,
+              marginTop: 150,
+              flexDirection: "row",
+              justifyContent: "center",
+              paddingTop: 20,
+            }}>
             <Text style={{ ...styles.cityName, color: textColor }}>{name}</Text>
-
-            <Text style={{ ...styles.stateName, color: textColor }}>
+          </View>
+          <View
+            style={{
+              ...styles.info2,
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}>
+            <View style={{ flex: 1 }}>
+              <Text
+                style={{
+                  ...styles.temperature,
+                  color: textColor,
+                  fontSize: 70,
+                }}>
+                {temp.toFixed(0)}
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "column",
+                alignItems: "flex-start",
+                paddingLeft: 10,
+              }}>
+              <Text
+                style={{ color: textColor, fontSize: 20, paddingBottom: 5 }}>
+                {tempMode === "Celsius" && " °C"}
+                {tempMode === "Fahrenheit" && " °F"}
+                {tempMode === "Kelvin" && " °K"}
+              </Text>
+              <Text style={{ color: textColor, fontSize: 20 }}>{state}</Text>
+            </View>
+            <View style={{ flex: 1, alignItems: "flex-start" }}>
+              <Text style={{ color: "white" }}></Text>
+            </View>
+            <View style={{ flex: 1, alignItems: "flex-end" }}>
               <Image
-                style={{ width: 200, height: 100 }}
+                style={{ width: 100, height: 100 }}
                 source={{
-                  uri: `http://openweathermap.org/img/w/${weather[0].icon}.png`,
+                  uri: `https:${current?.current.condition.icon}`,
                 }}
               />
-            </Text>
-            <Text style={{ ...styles.temperature, color: textColor }}>
-              {temp}°C
-            </Text>
-            <Text style={{ color: textColor, fontSize: 20 }}>{state}</Text>
+            </View>
           </View>
+
           <View style={styles.extraInfo}>
             <View style={styles.info}>
               <Image
@@ -154,7 +187,9 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   color: "white",
                   fontWeight: "bold",
                 }}>
-                {speed} m/s
+                {speedMode == "kmh" && `${speed} km/h`}
+                {speedMode == "ms" && `${convertKmToMs(speed)} m/s`}
+                {speedMode == "mph" && `${convertKmToMph(speed)} mph`}
               </Text>
             </View>
             <View style={styles.info}>
@@ -169,12 +204,116 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   color: "white",
                   fontWeight: "bold",
                 }}>
-                {pressure} mbar
+                {pressureMode == "mbar" && `${pressure} mbar`}
+                {pressureMode == "atm" && `${convertMbarToAtm(pressure)} atm`}
+                {pressureMode == "hPa" && `${pressure} hPa`}
               </Text>
             </View>
           </View>
+          <View style={styles.info3}>
+            <View style={styles.row}>
+              <View
+                style={{
+                  ...styles.column,
+                  flex: 2,
+                  justifyContent: "flex-start",
+                }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}>
+                  <Image
+                    style={{ width: 20, height: 20 }}
+                    source={{
+                      uri: `https:${current?.forecast.forecastday[0].day.condition.icon}`,
+                    }}
+                  />
+                  <Text style={styles.text}>
+                    Hôm nay-
+                    {current?.forecast.forecastday[0].day.condition.text}
+                  </Text>
+                </View>
+              </View>
+              <View style={{ ...styles.column, flex: 1 }}>
+                <Text
+                  style={
+                    styles.text
+                  }>{`${current?.forecast.forecastday[0].day.maxtemp_c.toFixed(
+                  0
+                )}° / ${current?.forecast.forecastday[0].day.mintemp_c.toFixed(
+                  0
+                )}°`}</Text>
+              </View>
+            </View>
+            <View style={styles.row}>
+              <View
+                style={{
+                  ...styles.column,
+                  flex: 2,
+                  justifyContent: "flex-start",
+                }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}>
+                  <Image
+                    style={{ width: 20, height: 20 }}
+                    source={{
+                      uri: `https:${current?.forecast.forecastday[1].day.condition.icon}`,
+                    }}
+                  />
+                  <Text style={styles.text}>Ngày mai- Nhiều nắng</Text>
+                </View>
+              </View>
+              <View style={{ ...styles.column, flex: 1 }}>
+                <Text
+                  style={
+                    styles.text
+                  }>{`${current?.forecast.forecastday[0].day.maxtemp_c.toFixed(
+                  0
+                )}° / ${current?.forecast.forecastday[0].day.mintemp_c.toFixed(
+                  0
+                )}°`}</Text>
+              </View>
+            </View>
+            <View style={{ ...styles.row, marginBottom: 20 }}>
+              <View
+                style={{
+                  ...styles.column,
+                  flex: 2,
+                  justifyContent: "flex-start",
+                }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}>
+                  <Image
+                    style={{ width: 20, height: 20 }}
+                    source={{
+                      uri: `https:${current?.forecast.forecastday[2].day.condition.icon}`,
+                    }}
+                  />
+                  <Text style={styles.text}>Ngày kia- Nhiều nắng</Text>
+                </View>
+              </View>
+              <View style={{ ...styles.column, flex: 1 }}>
+                <Text
+                  style={
+                    styles.text
+                  }>{`${current?.forecast.forecastday[0].day.maxtemp_c.toFixed(
+                  0
+                )}° / ${current?.forecast.forecastday[0].day.mintemp_c.toFixed(
+                  0
+                )}°`}</Text>
+              </View>
+            </View>
+          </View>
+
           <View style={styles.forecastContainer}>
-            <Forecast forecast={forecast} />
+            <Forecast forecast={forecast} current={current} />
           </View>
           <View>
             <View style={styles.infoA}>
@@ -234,7 +373,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                     {tempMode === "Fahrenheit" &&
                       `${convertCelsiusToFahrenheit(feels_like)} °F`}
                     {tempMode === "Kelvin" &&
-                      `${convertCelsiusToKelvin(feels_like)} K`}
+                      `${convertCelsiusToKelvin(feels_like)} °K`}
                   </Text>
                   <Text
                     style={{
@@ -274,7 +413,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       paddingBottom: 10,
                       color: "white",
                     }}>
-                    {current?.current?.clouds} %
+                    {current?.current?.cloud} %
                   </Text>
                 </View>
 
@@ -320,12 +459,9 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       paddingBottom: 10,
                       color: "white",
                     }}>
-                    {speedMode == "kmh" &&
-                      `${current?.current?.wind_speed} km/h`}
-                    {speedMode == "ms" &&
-                      `${convertKmToMs(current?.current?.wind_speed)} m/s`}
-                    {speedMode == "mph" &&
-                      `${convertKmToMph(current?.current?.wind_speed)} mph`}
+                    {speedMode == "kmh" && `${speed} km/h`}
+                    {speedMode == "ms" && `${convertKmToMs(speed)} m/s`}
+                    {speedMode == "mph" && `${convertKmToMph(speed)} mph`}
                   </Text>
                   <Text
                     style={{
@@ -345,7 +481,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                       paddingBottom: 10,
                       color: "white",
                     }}>
-                    {current?.current?.uvi}
+                    {current?.current?.uv.toFixed(1)}
                   </Text>
                 </View>
               </View>
@@ -377,7 +513,6 @@ const styles = StyleSheet.create({
   },
   stateName: {
     fontSize: 28,
-    // marginBottom: 20,
   },
   temperature: {
     fontSize: 40,
@@ -385,13 +520,23 @@ const styles = StyleSheet.create({
   },
   extraInfo: {
     flexDirection: "row",
-    marginTop: 20,
+    marginTop: 40,
     justifyContent: "space-between",
     padding: 10,
   },
+  info3: {
+    marginTop: 40,
+    minHeight: 50,
+    backgroundColor: "rgba(0,0,0, 0.5)",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    marginBottom: 40,
+    // paddingHorizontal: 10,
+  },
   info: {
-    // width: Dimensions.get("screen").width / 2.5,
-    height: 50,
+    minHeight: 50,
     backgroundColor: "rgba(0,0,0, 0.5)",
     // padding: 10,
     paddingLeft: 10,
@@ -401,6 +546,37 @@ const styles = StyleSheet.create({
     alignItems: "center",
     fontWeight: "bold",
     flexDirection: "row",
+    // paddingHorizontal: 10,
+  },
+  info1: {
+    // width: Dimensions.get("screen").width / 2.5,
+    minHeight: 50,
+    backgroundColor: "rgba(0,0,0, 0.5)",
+    // padding: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    // borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: "bold",
+    flexDirection: "row",
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+  },
+  info2: {
+    // width: Dimensions.get("screen").width / 2.5,
+    minHeight: 50,
+    backgroundColor: "rgba(0,0,0, 0.5)",
+    // padding: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    // borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: "bold",
+    flexDirection: "row",
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
   },
   infoText: {
     fontSize: 20,
@@ -412,7 +588,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0, 0.5)",
     // padding: 10,
     paddingTop: 20,
-    marginTop: 70,
+    marginTop: 40,
     paddingLeft: 10,
     paddingRight: 10,
     borderRadius: 15,
@@ -420,6 +596,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     fontWeight: "bold",
     flexDirection: "column",
+  },
+  row: {
+    flexDirection: "row",
+    marginTop: 20,
+  },
+  column: {
+    flex: 1,
+    alignItems: "center",
+  },
+  text: {
+    color: "white",
+    // fontWeight: "bold",
+    fontSize: 20,
+    fontWeight: 600,
   },
 });
 

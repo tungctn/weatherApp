@@ -1,42 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, View } from "react-native";
 import Svg, { Circle, Line } from "react-native-svg";
 
 // Những số liệu này chỉ mang tính chất minh họa.
-const data = [30, 40, 35, 45, 50, 45, 40];
-const maxTemp = Math.max(...data);
-const minTemp = Math.min(...data);
-const range = maxTemp - minTemp;
-const paddingTop = 10; // padding cho biểu đồ
-const paddingBottom = 10;
-const circleRadius = 5; // bán kính của các điểm
-const chartHeight = 200; // chiều cao của biểu đồ
-const chartWidth = 1000; // chiều rộng của biểu đồ
-const verticalScale = (chartHeight - paddingTop - paddingBottom) / range;
-const horizontalScale = chartWidth / (data.length - 1);
+// const data = [40, 35, 34, 34];
 
-const WeatherChart = () => {
+const WeatherChart = ({ data }) => {
+  // const dataSet = data?.list.slice(0, 4).map((item) => item.temp.max);
+  const dataSet = [40, 35, 34, 34];
+  const maxTemp = Math.max(...dataSet);
+  const minTemp = Math.min(...dataSet);
+  const range = maxTemp - minTemp;
+  const padding = 10; // padding cho biểu đồ
+  const circleRadius = 5; // bán kính của các điểm
+  const chartHeight = 40; // chiều cao của biểu đồ
+  const chartWidth = 300; // chiều rộng của biểu đồ
+  const verticalScale = (chartHeight - padding * 2) / range; // tỉ lệ giữa độ cao của biểu đồ và khoảng nhiệt độ
+  const horizontalScale = (chartWidth - padding * 2) / (dataSet.length - 1); // tỉ lệ giữa độ rộng của biểu đồ và số ngày
+
   return (
     <ScrollView horizontal={true}>
       <View>
         <Svg height={chartHeight} width={chartWidth}>
-          {data.map((temp, index) => {
-            const x = index * horizontalScale;
-            const y =
-              chartHeight - paddingBottom - (temp - minTemp) * verticalScale;
+          {dataSet.map((temp, index) => {
+            const x = padding + index * horizontalScale;
+            const y = chartHeight - padding - (temp - minTemp) * verticalScale;
             return (
               <Circle key={index} cx={x} cy={y} r={circleRadius} fill="black" />
             );
           })}
-          {data.slice(0, -1).map((temp, index) => {
-            const x1 = index * horizontalScale;
-            const y1 =
-              chartHeight - paddingBottom - (temp - minTemp) * verticalScale;
-            const x2 = (index + 1) * horizontalScale;
+          {dataSet.slice(0, -1).map((temp, index) => {
+            const x1 = padding + index * horizontalScale;
+            const y1 = chartHeight - padding - (temp - minTemp) * verticalScale;
+            const x2 = padding + (index + 1) * horizontalScale;
             const y2 =
               chartHeight -
-              paddingBottom -
-              (data[index + 1] - minTemp) * verticalScale;
+              padding -
+              (dataSet[index + 1] - minTemp) * verticalScale;
             return (
               <Line
                 key={index}
