@@ -253,7 +253,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                 <View
                   style={{
                     flexDirection: "row",
-                    alignItems: "left",
+                    // alignItems: "left",
                   }}>
                   <Image
                     style={{ width: 20, height: 20 }}
@@ -599,7 +599,8 @@ const styles = StyleSheet.create({
   },
   column: {
     flex: 1,
-    alignItems: "left",
+    // alignItems: "left",
+
     marginLeft: 20,
   },
   text: {

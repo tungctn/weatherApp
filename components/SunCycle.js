@@ -20,7 +20,7 @@ const SunCycle = ({ sunrise, sunset, current }) => {
         />
         <Circle
           cx={50 + 300 * sunPosition}
-          cy={100 - 50 * sunPosition - 10}
+          cy={100 - 50 * sunPosition + 10}
           r="20"
           stroke="orange"
           strokeWidth="2.5"
