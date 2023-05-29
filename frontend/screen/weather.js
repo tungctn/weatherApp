@@ -36,7 +36,7 @@ const MyPager = ({}) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ position: "absolute", top: 50, left: 10, zIndex: 1 }}>
+      <View style={{ position: "absolute", top: 20, left: 10, zIndex: 1 }}>
         <TouchableOpacity onPress={handleAddButtonPress}>
           <View style={styles.circleButton}>
             <FontAwesome name="plus" size={30} color="white" />
@@ -44,7 +44,7 @@ const MyPager = ({}) => {
         </TouchableOpacity>
       </View>
 
-      <View style={{ position: "absolute", top: 50, right: 10, zIndex: 1 }}>
+      <View style={{ position: "absolute", top: 20, right: 10, zIndex: 1 }}>
         <TouchableOpacity onPress={handleSetButtonPress}>
           <View style={styles.circleButton}>
             <FontAwesome name="cog" size={30} color="white" />

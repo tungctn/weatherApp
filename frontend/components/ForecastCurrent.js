@@ -14,7 +14,7 @@ import {
   convertCelsiusToKelvin,
   convertKmToMph,
   convertKmToMs,
-} from "../constants";
+} from "../../constants";
 import { useIsFocused } from "@react-navigation/native";
 
 const Forecast = ({ forecast }) => {

@@ -10,21 +10,11 @@ import Info from "./screen/info";
 import ForecastDay from "./screen/forecast";
 import i18n from "./i18n";
 import { I18nextProvider, useTranslation } from "react-i18next";
-import ThemeContext from "./ThemeContext";
-import ThemeProvider from "./ThemeProvider";
-// import Setting from "./screen/setting";
 import * as Notifications from "expo-notifications";
 import Setting from "./screen/setting";
-// import WeatherApp from "./screen/weather";
-// import {
-//   ConfirmModalProvider,
-//   useConfirmModal,
-// } from "@sj-distributor/react-native-confirm-modal";
 
 const Stack = createNativeStackNavigator();
 const App = () => {
-  
-
   const { t } = useTranslation();
   useEffect(() => {
     (async () => {

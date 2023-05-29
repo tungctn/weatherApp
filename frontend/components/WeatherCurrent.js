@@ -17,7 +17,7 @@ import {
   convertKmToMph,
   convertKmToMs,
   convertMbarToAtm,
-} from "../constants";
+} from "../../constants";
 import Svg, { Circle } from "react-native-svg";
 import SunCycle from "./SunCycle";
 import { useTranslation } from "react-i18next";
@@ -84,16 +84,16 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
   }, [weatherData, isFocused]);
 
   const getBackgroundImg = (weather) => {
-    if (weather === "Snow") return snow;
-    if (weather === "Clear") return sunny;
-    if (weather === "Rain") return rainy;
-    if (weather === "Haze") return haze;
-    return haze;
+    if (weather === "Snow")
+      return "https://freefrontend.com/assets/img/css-snow/thumb.jpg";
+    if (weather === "Clear")
+      return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdcSlmiqZTNer0aaGWm7titLnBwMd8cnd_2bVjjLdZpjJm7-qKGJHLumey28iqriSPlJ4&usqp=CAU";
+    if (weather === "Rain")
+      return "https://e0.pxfuel.com/wallpapers/207/33/desktop-wallpaper-rainy-day-romantic-couple-in-rain-rainy-day-for-your-mobile-tablet-explore-raining-s-rainy-background-animated-raining.jpg";
+    return "https://motionarray.imgix.net/preview-89537-uPNkIXfFl5-high_0006.jpg?w=660&q=60&fit=max&auto=format";
   };
 
   let textColor = "white";
-  const currentDate = new Date();
-  const formattedDate = format(currentDate, "dd 'thg' M EEEE");
 
   return (
     <ScrollView>
@@ -101,7 +101,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
         <StatusBar backgroundColor="#232f34" />
         <ImageBackground
           source={{
-            uri: "https://img.freepik.com/free-vector/blue-cloudy-daylight-background-weather-design_33099-512.jpg",
+            uri: getBackgroundImg(main),
           }}
           style={styles.backgroundImg}
           resizeMode="cover">
