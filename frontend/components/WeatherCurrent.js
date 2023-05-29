@@ -17,7 +17,7 @@ import {
   convertKmToMph,
   convertKmToMs,
   convertMbarToAtm,
-} from "../../constants";
+} from "../constants";
 import Svg, { Circle } from "react-native-svg";
 import SunCycle from "./SunCycle";
 import { useTranslation } from "react-i18next";
