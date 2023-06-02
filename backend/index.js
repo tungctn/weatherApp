@@ -19,7 +19,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-app.post("/find-complexity", async (req, res) => {
+app.post("/advice", async (req, res) => {
   try {
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
