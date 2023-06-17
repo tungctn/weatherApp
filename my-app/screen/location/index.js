@@ -24,13 +24,20 @@ const Location = ({ location }) => {
   const [forecast, setForecast] = useState(null);
 
   const loadForecast = async () => {
-    const response1 = await getCurrentData(location);
+    // const response1 = await getCurrentData(location);
+    const data1 = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=c598de62108b5c93a8212f54dc4b2fe0&lang=vi`
+    );
+    const response1 = await data1.json();
     const lat = response1?.coord?.lat;
     const lon = response1?.coord?.lon;
     const response = await fetch(
       `https://api.weatherapi.com/v1/forecast.json?key=367cf3477e0345fa8d932522222409&q=${lat},${lon}&days=5`
     );
     const data = await response.json();
+    console.log({
+      data2: data,
+    });
     if (!response.ok) {
       Alert.alert("Error", data.message);
     } else {

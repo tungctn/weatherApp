@@ -16,7 +16,6 @@ const MyPager = ({}) => {
 
   useEffect(() => {
     AsyncStorage.getItem("location").then((data) => {
-      // console.log(data);
       const list = JSON.parse(data);
       console.log(list);
       const newList = ["Hanoi"].concat(list);

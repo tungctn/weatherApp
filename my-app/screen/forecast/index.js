@@ -17,6 +17,79 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import WeatherChart from "../../components/WeatherChart";
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F5F5F5",
+  },
+  header: {
+    flexDirection: "row",
+    marginTop: 20,
+    marginLeft: 10,
+    marginBottom: 10,
+  },
+  locationText: {
+    fontSize: 40,
+    textAlign: "center",
+    fontWeight: "300",
+    color: "#333",
+    marginBottom: 30,
+  },
+  forecastItem: {
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#FFF",
+    marginHorizontal: 10,
+    marginTop: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  dayText: {
+    color: "#333",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  dateText: {
+    color: "#666",
+    fontSize: 14,
+  },
+  temperatureText: {
+    color: "#333",
+    fontWeight: "bold",
+    fontSize: 24,
+    marginTop: 5,
+  },
+  windText: {
+    color: "#666",
+    fontSize: 14,
+  },
+  image: {
+    width: 60,
+    height: 60,
+    marginTop: 10,
+  },
+  chartContainer: {
+    marginTop: 20,
+    marginBottom: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  circle: {
+    height: 10,
+    width: 10,
+    borderRadius: 5,
+    backgroundColor: "#333",
+    position: "absolute",
+  },
+});
+
 const ForecastDay = ({ route }) => {
   const { location } = route.params;
   const [forecast, setForecast] = useState(null);
@@ -86,41 +159,26 @@ const ForecastDay = ({ route }) => {
   ];
 
   return (
-    <SafeAreaView>
-      {!forecast && <ActivityIndicator size="large" color="black" />}
-
+    <SafeAreaView style={styles.container}>
+      {!forecast && <ActivityIndicator size="large" color="#333" />}
       <ScrollView>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            marginTop: 10,
-            marginLeft: 10,
-          }}>
+        <View style={styles.header}>
           <Ionicons
-            style={{ fontSize: 40 }}
+            style={{ fontSize: 40, color: "#333" }}
             name="arrow-back-circle-outline"
             onPress={() => {
               navigator.goBack();
             }}
           />
         </View>
-        <View style={{ flex: 1, marginBottom: 30 }}>
-          <Text
-            style={{
-              fontSize: 40,
-              textAlign: "center",
-              fontWeight: "300",
-            }}>
-            {location}
-          </Text>
+        <View>
+          <Text style={styles.locationText}>{location}</Text>
         </View>
         <FlatList
           horizontal
           data={forecast?.list}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => {
-            console.log({ forecast: forecast?.list[0].weather });
             const weather = item.weather[0];
             const dt = new Date(item.dt * 1000);
             const circleRadius = 5;
@@ -136,87 +194,45 @@ const ForecastDay = ({ route }) => {
             const circleY = (item.temp.max - minTemp) * verticalScale;
             const circleY1 = (item.temp.min - minTemp) * verticalScale;
             return (
-              <View
-                style={
-                  index === 0
-                    ? [
-                        {
-                          alignItems: "center",
-                          textAlign: "center",
-                          padding: 10,
-                          borderRadius: 10,
-                          backgroundColor: "rgba(0,0,0,0.05)",
-                        },
-                      ]
-                    : [
-                        {
-                          alignItems: "center",
-                          textAlign: "center",
-                          padding: 10,
-                        },
-                      ]
-                }>
-                <Text style={{ color: "black" }}>
+              <View style={styles.forecastItem}>
+                <Text style={styles.dayText}>
                   {index === 0 && "Hôm nay"}
                   {index === 1 && "Ngày mai"}
                   {index > 1 && daysOfWeek[dt.getDay()]}
                 </Text>
-                <Text style={{ color: "black" }}>
+                <Text style={styles.dateText}>
                   {dt.getDate()}/{dt.getMonth() + 1}
                 </Text>
                 <Image
-                  style={{ width: 40, height: 80 }}
+                  style={styles.image}
                   source={{
                     uri: `http://openweathermap.org/img/w/${weather.icon}.png`,
                   }}
                 />
-                <Text
-                  style={{ color: "black", fontWeight: "bold", fontSize: 18 }}>
+                <Text style={styles.temperatureText}>
                   {Math.round(item.temp.max)}°
                 </Text>
-                <View
-                  style={{
-                    marginTop: 30,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: chartHeight,
-                  }}>
+                <View style={styles.chartContainer}>
                   <View
                     style={{
-                      height: circleRadius * 2,
-                      width: circleRadius * 2,
-                      borderRadius: circleRadius,
-                      backgroundColor: "black",
-                      position: "absolute",
+                      ...styles.circle,
                       bottom: circleY - circleRadius,
                     }}
                   />
                 </View>
-                <View
-                  style={{
-                    marginTop: 20,
-                    marginBottom: 30,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: chartHeight,
-                  }}>
+                <View style={styles.chartContainer}>
                   <View
                     style={{
-                      height: circleRadius * 2,
-                      width: circleRadius * 2,
-                      borderRadius: circleRadius,
-                      backgroundColor: "black",
-                      position: "absolute",
+                      ...styles.circle,
                       bottom: circleY1 - circleRadius,
                     }}
                   />
                 </View>
-                <Text
-                  style={{ color: "black", fontWeight: "bold", fontSize: 18 }}>
+                <Text style={styles.temperatureText}>
                   {Math.round(item.temp.min)}°
                 </Text>
                 <Image
-                  style={{ width: 40, height: 80 }}
+                  style={styles.image}
                   source={{
                     uri: `http://openweathermap.org/img/w/${weather.icon}.png`,
                   }}
@@ -228,7 +244,7 @@ const ForecastDay = ({ route }) => {
                       uri: "https://i.pinimg.com/736x/04/58/97/045897378f83762064bf5618e519cf90.jpg",
                     }}
                   />
-                  <Text style={{ color: "black" }}>{item.wind.speed} m/s</Text>
+                  <Text style={styles.windText}>{item.wind.speed} m/s</Text>
                 </View>
               </View>
             );

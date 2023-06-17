@@ -43,11 +43,6 @@ app.post("/advice", async (req, res) => {
           3. <Content of message 3>
           4. <Content of message 4>
           5. <Content of message 5>
-          6. <Content of message 6>
-          7. <Content of message 7>
-          8. <Content of message 8>
-          9. <Content of message 9>
-          10. <Content of message 10>
           
           Your goal is to make the experience of users using weather app become more interesting and informative.
           

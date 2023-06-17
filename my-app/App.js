@@ -12,6 +12,8 @@ import i18n from "./i18n";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import * as Notifications from "expo-notifications";
 import Setting from "./screen/setting";
+import Advice from "./screen/advice";
+import Air from "./screen/air_pollution";
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -23,6 +25,13 @@ const App = () => {
         await Notifications.requestPermissionsAsync();
       }
     })();
+    // AsyncStorage.getItem("location").then((value) => {
+    //   console.log("location", value);
+    // });
+    AsyncStorage.setItem(
+      "location",
+      JSON.stringify(["Tuyen Quang", "Ban Kan"])
+    );
   }, []);
 
   return (
@@ -74,6 +83,22 @@ const App = () => {
             component={ForecastDay}
             options={{
               title: "Forecast",
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Advice"
+            component={Advice}
+            options={{
+              title: "Advice",
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Air"
+            component={Air}
+            options={{
+              title: "Air",
               headerShown: false,
             }}
           />

@@ -22,7 +22,7 @@ import Svg, { Circle } from "react-native-svg";
 import SunCycle from "./SunCycle";
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { format, parseISO } from "date-fns";
 
 const Weather = ({ weatherData, setWeatherData, forecast }) => {
@@ -36,6 +36,7 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
     wind: { speed },
   } = weatherData;
   const { t } = useTranslation();
+  const navigation = useNavigation();
 
   const [current, setCurrent] = useState(null);
   const [tempMode, setTempMode] = useState(null);
@@ -45,13 +46,17 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
   const loadCurrent = async () => {
     const response = await fetch(url1);
     const data = await response.json();
-    if (!response.ok) {
-      Alert.alert("Error", data.message);
-    } else {
-      console.log({ data: data });
+    console.log({
+      data1: data,
+    });
+    // if (!response.ok) {
+    //   // console.log("Error");
+    //   Alert.alert("Error", data.message);
+    // } else {
+    console.log({ data: data });
 
-      setCurrent(data);
-    }
+    setCurrent(data);
+    // }
   };
 
   const [{ main }] = weather;
@@ -207,6 +212,23 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                 {pressureMode == "mbar" && `${pressure} mbar`}
                 {pressureMode == "atm" && `${convertMbarToAtm(pressure)} atm`}
                 {pressureMode == "hPa" && `${pressure} hPa`}
+              </Text>
+            </View>
+          </View>
+          <View>
+            <View
+              style={{ ...styles.info2, borderRadius: 15, marginBottom: 20 }}>
+              <Text
+                onPress={() => {
+                  navigation.navigate("Advice", {
+                    weather: weatherData,
+                  });
+                }}
+                style={{
+                  fontSize: 30,
+                  color: "white",
+                }}>
+                Lời khuyên
               </Text>
             </View>
           </View>
@@ -481,6 +503,23 @@ const Weather = ({ weatherData, setWeatherData, forecast }) => {
                   </Text>
                 </View>
               </View>
+            </View>
+          </View>
+          <View>
+            <View
+              style={{ ...styles.info2, borderRadius: 15, marginBottom: 20 }}>
+              <Text
+                onPress={() => {
+                  navigation.navigate("Air", {
+                    weather: weatherData,
+                  });
+                }}
+                style={{
+                  fontSize: 20,
+                  color: "white",
+                }}>
+                Chỉ số chất lượng không khí
+              </Text>
             </View>
           </View>
         </ImageBackground>
